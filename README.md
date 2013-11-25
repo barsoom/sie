@@ -78,15 +78,14 @@ class YourDataSource
     [ "3100" ]
   end
 
-  # Usually calculating the balance before (and on) the specific date requires some
-  # database interaction, so the document uses this callback to fetch that data as needed.
+  # Used to calculate balance before (and on) the given date for an account.
   def balance_before(account_number, date)
     # ActiveRecord example: VoucherLine.where('booked_on <= ?', date).where(account_number: account_number).sum(:amount)
     0
   end
 
-  # This method allows you to load voucher data in batches so that you can generate large
-  # SIE files without having to keep lots of data in memory at once.
+  # Used to load voucher data in batches so that you don't need to load all of
+  # it into memory at once.
   def each_voucher(&block)
     [
       {
