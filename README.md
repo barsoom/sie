@@ -66,7 +66,7 @@ class YourDataSource
 
   def accounts
     [
-      number: 1500, description: "Customer ledger"
+      { number: 1500, description: "Customer ledger" }
     ]
   end
 
@@ -83,6 +83,7 @@ class YourDataSource
     # ActiveRecord example:
     # VoucherLine.where('booked_on <= ?', date).
     # where(account_number: account_number).sum(:amount)
+
     0
   end
 
