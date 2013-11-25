@@ -1,5 +1,7 @@
 # Sie
 
+[![Build Status](https://secure.travis-ci.org/barsoom/sie.png)](http://travis-ci.org/barsoom/sie)
+
 ## Installation
 
 Add this line to your application's Gemfile:
