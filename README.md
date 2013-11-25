@@ -80,7 +80,9 @@ class YourDataSource
 
   # Used to calculate balance before (and on) the given date for an account.
   def balance_before(account_number, date)
-    # ActiveRecord example: VoucherLine.where('booked_on <= ?', date).where(account_number: account_number).sum(:amount)
+    # ActiveRecord example:
+    # VoucherLine.where('booked_on <= ?', date).
+    # where(account_number: account_number).sum(:amount)
     0
   end
 
@@ -89,10 +91,17 @@ class YourDataSource
   def each_voucher(&block)
     [
       {
-        creditor: false, type: :invoice, number: 1, booked_on: Date.today, description: "Invoice 1",
+        creditor: false, type: :invoice, number: 1,
+        booked_on: Date.today, description: "Invoice 1",
         voucher_lines: [
-          { account_number: "1500", amount: 512.0, booked_on: Date.today, description: "Item 1" },
-          { account_number: "3100", amount: -512.0, booked_on: Date.today, description: "Item 1" },
+          {
+            account_number: "1500", amount: 512.0,
+            booked_on: Date.today, description: "Item 1"
+          },
+          {
+            account_number: "3100", amount: -512.0,
+            booked_on: Date.today, description: "Item 1"
+          },
         ]
       }
     ].each(&block)
