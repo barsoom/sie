@@ -14,20 +14,6 @@ Or install it yourself as:
 
     $ gem install sie
 
-## Developing
-
-First time setup:
-
-    script/bootstrap
-
-Running tests:
-
-    rake
-
-Getting the latest code and gems:
-
-    script/refresh
-
 ## Generating a SIE file
 
 To generate a SIE document you have to define a class that responds to the methods below. Try it out! Copy and paste this example into a ruby file and run it.
@@ -121,6 +107,20 @@ For more info, see the specs.
 ## Parsing a SIE file
 
 For now, see the specs.
+
+## Developing
+
+First time setup:
+
+    script/bootstrap
+
+Running tests:
+
+    rake
+
+Getting the latest code and gems:
+
+    script/refresh
 
 ## Contributing
 
