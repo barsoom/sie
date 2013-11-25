@@ -1,3 +1,5 @@
+require "stringio"
+
 class Sie::Document::Renderer
   EMPTY_ARRAY = :empty_array
 
