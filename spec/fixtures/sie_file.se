@@ -1,0 +1,28 @@
+#FLAGGA 0
+#PROGRAM "fooconomic" "1.0"
+#FORMAT PC8
+#GEN 20130101
+#SIETYP 4
+#ORGNR 555555-5555
+#FNAMN "Foocorp"
+#ADRESS "Foocorp" "" "12345 City" "555-12345"
+#KONTO 1510 "Accounts receivable"
+#KTYP 1510 T
+#SRU 1510 204
+#KONTO 1930 "Bank account"
+#KTYP 1930 T
+#SRU 1930 200
+#KONTO 2440 Supplier
+#KTYP 2440 S
+#SRU 2440 300
+#VER A 1 20130101 "Invoice" 20120105
+{
+   #TRANS 1510 {} -200 20130101 "Coffee machine"
+   #TRANS 4100 {} 180 20130101 "Coffee machine"
+   #TRANS 2611 {} -20 20130101 "VAT"
+}
+#VER A 2 20130102 "Payment" 20120105
+{
+   #TRANS 1510 {} -200 20130101 "Payment: Coffee machine"
+   #TRANS 1970 {} 200 20130101 "Payment: Coffee machine"
+}

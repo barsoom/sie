@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export PATH=/opt/app_ruby/bin:$PATH
+export GEM_HOME="$HOME/.gem"
+
+bundle install --path /var/lib/jenkins/.bundle/sie 1> /dev/null

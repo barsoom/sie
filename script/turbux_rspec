@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+#
+# Command to run the specs the correct way when triggered from the turbux vim plugin.
+
+command = "rspec #{ARGV.first}"
+exit(1) unless system(command)
