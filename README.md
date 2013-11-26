@@ -3,6 +3,7 @@
 [![Build Status](https://secure.travis-ci.org/barsoom/sie.png)](http://travis-ci.org/barsoom/sie)
 [![Code Climate](https://codeclimate.com/github/barsoom/sie.png)](https://codeclimate.com/github/barsoom/sie)
 
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -109,7 +110,22 @@ For more info, see the specs.
 
 ## Parsing a SIE file
 
-For now, see the specs.
+You can parse sie data from anything that responds to `each_line` like a file or a string.
+
+```ruby
+File.open("path/to/file.se") do |f|
+  parser = Sie::Parser.new
+  sie_file = parser.parse(f)
+
+  # The company name
+  puts sie_file.entries_with_label("fnamn").first.attributes["foretagsnamn"]
+
+  # The first account number
+  puts sie_file.entries_with_label("konto").first.attributes["kontonr"]
+end
+```
+
+For more info, see the specs.
 
 ## Developing
 
