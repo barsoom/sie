@@ -19,7 +19,7 @@ Or install it yourself as:
 
 ## Generating a SIE file
 
-To generate a SIE document you have to define a class that responds to the methods below. Try it out! Copy and paste this example into a ruby file and run it.
+To generate a SIE document you define a class that responds to the methods below. Try it out! Copy and paste this example into a ruby file and run it.
 
 ```ruby
 require "date"
