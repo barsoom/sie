@@ -17,15 +17,15 @@ describe Sie::Document, "#render" do
       {
         creditor: false, type: :invoice, number: 1, booked_on: from_date + 2, description: "Invoice 1",
         voucher_lines: [
-          { account_number: "1500", amount: 512.0, booked_on: from_date + 2, description: "Item 1" },
-          { account_number: "3100", amount: -512.0, booked_on: from_date + 2, description: "Item 1" },
+          { account_number: 1500, amount: 512.0, booked_on: from_date + 2, description: "Item 1" },
+          { account_number: 3100, amount: -512.0, booked_on: from_date + 2, description: "Item 1" },
         ]
       },
       {
         creditor: true, type: :payment, number: 2, booked_on: from_date + 365, description: "Payout 1",
         voucher_lines: [
-          { account_number: "2400", amount: 256.0, booked_on: from_date + 365, description: "Payout line 1" },
-          { account_number: "1970", amount: -256.0, booked_on: from_date + 365, description: "Payout line 2" },
+          { account_number: 2400, amount: 256.0, booked_on: from_date + 365, description: "Payout line 1" },
+          { account_number: 1970, amount: -256.0, booked_on: from_date + 365, description: "Payout line 2" },
         ]
       }
     ]
@@ -69,8 +69,8 @@ describe Sie::Document, "#render" do
       generated_on: generated_on,
       company_name: "Foocorp",
       financial_year_start_month: 1,
-      balance_account_numbers: [ "1500", "2400" ],
-      closing_account_numbers: [ "3100" ]
+      balance_account_numbers: [ 1500, 2400 ],
+      closing_account_numbers: [ 3100 ]
     )
     doc = Sie::Document.new(data_source)
   }

@@ -61,11 +61,11 @@ class YourDataSource
   end
 
   def balance_account_numbers
-    [ "1500", "2400" ]
+    [ 1500, 2400 ]
   end
 
   def closing_account_numbers
-    [ "3100" ]
+    [ 3100 ]
   end
 
   # Used to calculate balance before (and on) the given date for an account.
@@ -86,11 +86,11 @@ class YourDataSource
         booked_on: Date.today, description: "Invoice 1",
         voucher_lines: [
           {
-            account_number: "1500", amount: 512.0,
+            account_number: 1500, amount: 512.0,
             booked_on: Date.today, description: "Item 1"
           },
           {
-            account_number: "3100", amount: -512.0,
+            account_number: 3100, amount: -512.0,
             booked_on: Date.today, description: "Item 1"
           },
         ]
