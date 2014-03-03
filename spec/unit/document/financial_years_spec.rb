@@ -28,11 +28,21 @@ describe Sie::Document::FinancialYears, ".between" do
     Sie::Document::FinancialYears.between(
       5,
       Date.new(2011, 9, 1),
-      Date.new(2014, 1, 10)
+      Date.new(2014, 1, 31)
     ).should == [
       Date.new(2011, 9, 1)..Date.new(2012, 4, 30),
       Date.new(2012, 5, 1)..Date.new(2013, 4, 30),
-      Date.new(2013, 5, 1)..Date.new(2014, 1, 10),
+      Date.new(2013, 5, 1)..Date.new(2014, 1, 31),
+    ]
+  end
+
+  it "normalizes start and end date for compatibility with other systems" do
+    Sie::Document::FinancialYears.between(
+      1,
+      Date.new(2011, 9, 15),
+      Date.new(2011, 10, 10)
+    ).should == [
+      Date.new(2011, 9, 1)..Date.new(2011, 10, 31),
     ]
   end
 end

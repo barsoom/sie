@@ -1,3 +1,6 @@
+require "active_support/core_ext/time"
+require "active_support/core_ext/date"
+
 class Sie::Document
   class FinancialYears
     def self.between(start_month, from_date, to_date)
@@ -15,7 +18,7 @@ class Sie::Document
         first_date = [start_of_year, from_date].max
         last_date = [end_of_year, to_date].min
 
-        result << (first_date..last_date)
+        result << (first_date.beginning_of_month..last_date.end_of_month)
       end
 
       result
