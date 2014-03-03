@@ -3,25 +3,41 @@ require "active_support/core_ext/date"
 
 class Sie::Document
   class FinancialYears
-    def self.between(start_month, from_date, to_date)
-      result = []
+    method_object :between,
+      :start_month, :from_date, :to_date
 
-      from_date.upto(to_date) do |date|
-        next if result.any? { |r| r.cover?(date) }
+    def between
+      from_date.upto(to_date).map { |date|
+        financial_year = FinancialYear.new(date, start_month)
+        financial_year.date_range(from_date, to_date)
+      }.uniq
+    end
+  end
 
-        start_of_year = Date.new(date.year, start_month, 1)
-        start_of_year = start_of_year <= date ? start_of_year : (start_of_year << 12)
+  class FinancialYear
+    pattr_initialize :date, :start_month
 
-        a_year_later = start_of_year >> 11
-        end_of_year = Date.new(a_year_later.year, a_year_later.month, -1)
+    def date_range(from_date, to_date)
+      first_date = [ start_of_year, from_date ].max
+      last_date = [ end_of_year, to_date ].min
+      (first_date.beginning_of_month..last_date.end_of_month)
+    end
 
-        first_date = [start_of_year, from_date].max
-        last_date = [end_of_year, to_date].min
+    private
 
-        result << (first_date.beginning_of_month..last_date.end_of_month)
+    def start_of_year
+      start_of_year = Date.new(date.year, start_month, 1)
+
+      if start_of_year <= date
+        start_of_year
+      else
+        start_of_year << 12
       end
+    end
 
-      result
+    def end_of_year
+      a_year_later = start_of_year >> 11
+      Date.new(a_year_later.year, a_year_later.month, -1)
     end
   end
 end
