@@ -95,7 +95,7 @@ describe Sie::Document, "#render" do
     expect(indexed_entry_attribute("rar", 1, "start")).to eq("20120101")
     expect(indexed_entry_attribute("rar", 1, "slut")).to  eq("20121231")
     expect(indexed_entry_attribute("rar", 2, "arsnr")).to eq("-2")
-    expect(indexed_entry_attribute("rar", 2, "start")).to eq("20110901")
+    expect(indexed_entry_attribute("rar", 2, "start")).to eq("20110101")
     expect(indexed_entry_attribute("rar", 2, "slut")).to  eq("20111231")
   end
 
