@@ -1,5 +1,4 @@
-require "active_support/core_ext/time"
-require "active_support/core_ext/date"
+require "active_support/time"
 
 class Sie::Document
   class FinancialYears
