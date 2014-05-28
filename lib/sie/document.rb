@@ -87,6 +87,13 @@ class Sie::Document
         description    = line.fetch(:description)
 
         add_line("TRANS", account_number, Renderer::EMPTY_ARRAY, amount, booked_on, description)
+
+        # Some consumers of SIE cannot handle single voucher lines (fortnox), so add another empty one to make
+        # it balance. The spec just requires the sum of lines to be 0, so single lines with zero amount would conform,
+        # but break for these implementations.
+        if voucher_lines.size < 2 && amount == 0
+          add_line("TRANS", account_number, Renderer::EMPTY_ARRAY, amount, booked_on, description)
+        end
       end
     end
   end

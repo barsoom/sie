@@ -155,6 +155,23 @@ describe Sie::Document, "#render" do
     )
   end
 
+  context "with a zeroed single voucher line" do
+    let(:vouchers) {
+      [
+        {
+          creditor: false, type: :invoice, number: 1, booked_on: from_date + 2, description: "Invoice 1",
+          voucher_lines: [
+            { account_number: 1500, amount: 0, booked_on: from_date + 2, description: "Item 1" },
+          ]
+        },
+      ]
+    }
+
+    it "makes sure there is always a matching zeroed line" do
+      expect(indexed_voucher_entries(0).size).to eq(2)
+    end
+  end
+
   private
 
   def entry_attribute(label, attribute)
