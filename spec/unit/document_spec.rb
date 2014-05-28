@@ -9,7 +9,7 @@ describe Sie::Document, "#render" do
   let(:generated_on) { Date.yesterday }
   let(:accounts) {
     [
-      number: 1500, description: "Customer ledger"
+      number: 1500, description: "Customer ledger",
     ]
   }
   let(:vouchers) {
@@ -153,6 +153,31 @@ describe Sie::Document, "#render" do
       "kontonr" => "1970", "belopp" => "-256.0",
       "transdat" => "20120831", "transtext" => "Payout line 2"
     )
+  end
+
+  context "with really long descriptions" do
+    let(:accounts) {
+      [
+        number: 1500, description: "Customer ledger with really really long description blablabla"
+      ]
+    }
+    let(:vouchers) {
+      [
+        {
+          creditor: true, type: :payment, number: 3, booked_on: from_date + 365, description: "Payout 1 with really really long description blablabla",
+          voucher_lines: [
+            { account_number: 2400, amount: 256.0, booked_on: from_date + 365, description: "Payout line 1 with really really long description blablabla" },
+            { account_number: 1970, amount: -256.0, booked_on: from_date + 365, description: "Payout line 2" },
+          ]
+        }
+      ]
+    }
+
+    it "truncates the descriptions" do
+      expect(indexed_entry_attributes("konto", 0)).to eq("kontonr" => "1500", "kontonamn" => "Customer ledger with really re")
+      expect(indexed_entry("ver", 0).attributes["vertext"]).to eq("Payout 1 with really really lo")
+      expect(indexed_voucher_entries(0)[0].attributes["transtext"]).to eq("Payout line 1 with really real")
+    end
   end
 
   context "with a zeroed single voucher line" do
