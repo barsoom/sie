@@ -183,12 +183,7 @@ describe Sie::Document, "#render" do
   context "with a zeroed single voucher line" do
     let(:vouchers) {
       [
-        {
-          creditor: false, type: :invoice, number: 1, booked_on: from_date + 2, description: "Invoice 1",
-          voucher_lines: [
-            { account_number: 1500, amount: 0, booked_on: from_date + 2, description: "Item 1" },
-          ]
-        },
+        build_voucher(voucher_lines: [ build_voucher_line(amount: 0) ])
       ]
     }
 
