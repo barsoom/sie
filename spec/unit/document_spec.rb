@@ -163,13 +163,13 @@ describe Sie::Document, "#render" do
     }
     let(:vouchers) {
       [
-        {
-          creditor: true, type: :payment, number: 3, booked_on: from_date + 365, description: "Payout 1 with really really long description blablabla",
+        build_voucher(
+          description: "Payout 1 with really really long description blablabla",
           voucher_lines: [
-            { account_number: 2400, amount: 256.0, booked_on: from_date + 365, description: "Payout line 1 with really really long description blablabla" },
-            { account_number: 1970, amount: -256.0, booked_on: from_date + 365, description: "Payout line 2" },
+            build_voucher_line(description: "Payout line 1 with really really long description blablabla"),
+            build_voucher_line(description: "Payout line 2"),
           ]
-        }
+        )
       ]
     }
 
@@ -198,6 +198,26 @@ describe Sie::Document, "#render" do
   end
 
   private
+
+  def build_voucher(attributes)
+    defaults = {
+      creditor: true,
+      type: :payment,
+      number: 1,
+      booked_on: Date.today,
+      description: "A voucher",
+      voucher_lines: [
+        build_voucher_line,
+        build_voucher_line,
+      ],
+    }
+    defaults.merge(attributes)
+  end
+
+  def build_voucher_line(attributes = {})
+    defaults = { account_number: 1234, amount: 1, booked_on: Date.today, description: "A voucher line" }
+    defaults.merge(attributes)
+  end
 
   def entry_attribute(label, attribute)
     indexed_entry_attribute(label, 0, attribute)
