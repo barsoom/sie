@@ -187,7 +187,7 @@ describe Sie::Document, "#render" do
       ]
     }
 
-    it "makes sure there is always a matching zeroed line" do
+    it "ensures there are at least two lines" do
       expect(indexed_voucher_entries(0).size).to eq(2)
     end
   end
