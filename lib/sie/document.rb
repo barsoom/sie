@@ -6,7 +6,8 @@ require "active_support/core_ext/module/delegation"
 
 class Sie::Document
   pattr_initialize :data_source
-  FORTNOX_DESCRIPTION_LENGTH_MAX = 30
+  # Because fortnox imposes these limits
+  DESCRIPTION_LENGTH_MAX = 30
 
   def render
     add_header
@@ -43,7 +44,7 @@ class Sie::Document
   def add_accounts
     accounts.each do |account|
       number      = account.fetch(:number)
-      description = account.fetch(:description).slice(0, FORTNOX_DESCRIPTION_LENGTH_MAX)
+      description = account.fetch(:description).slice(0, DESCRIPTION_LENGTH_MAX)
 
       add_line("KONTO", number, description)
     end
@@ -76,7 +77,7 @@ class Sie::Document
     type          = opts.fetch(:type)
     number        = opts.fetch(:number)
     booked_on     = opts.fetch(:booked_on)
-    description   = opts.fetch(:description).slice(0, FORTNOX_DESCRIPTION_LENGTH_MAX)
+    description   = opts.fetch(:description).slice(0, DESCRIPTION_LENGTH_MAX)
     voucher_lines = opts.fetch(:voucher_lines)
 
     add_line("VER", voucher_series(creditor, type), number, booked_on, description)
@@ -88,7 +89,7 @@ class Sie::Document
         booked_on      = line.fetch(:booked_on)
         # Some SIE-importers (fortnox) cannot handle descriptions longer than 30 characters,
         # but the specification has no limit.
-        description    = line.fetch(:description).slice(0, FORTNOX_DESCRIPTION_LENGTH_MAX)
+        description    = line.fetch(:description).slice(0, DESCRIPTION_LENGTH_MAX)
 
         add_line("TRANS", account_number, Renderer::EMPTY_ARRAY, amount, booked_on, description)
 
