@@ -7,21 +7,14 @@ class Sie::Document
 
     def between
       from_date.year.upto(to_date.year).map { |year|
-        financial_year = FinancialYear.new(year, start_month)
-        financial_year_date_range = financial_year.date_range
-        financial_year_date_range unless out_of_year_range(financial_year_date_range)
-      }.compact
-    end
-
-    private
-
-    def out_of_year_range(range)
-      range.last.year > to_date.year
+        FinancialYear.date_range(year, start_month)
+      }
     end
   end
 
   class FinancialYear
-    pattr_initialize :year, :start_month
+    method_object :date_range,
+      :year, :start_month
 
     def date_range
       (start_of_year.beginning_of_month..end_of_year.end_of_month)
@@ -30,7 +23,7 @@ class Sie::Document
     private
 
     def start_of_year
-      start_of_year = Date.new(year, start_month, 1)
+      Date.new(year, start_month, 1)
     end
 
     def end_of_year
