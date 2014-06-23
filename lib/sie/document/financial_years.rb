@@ -17,7 +17,7 @@ class Sie::Document
       :year, :start_month
 
     def date_range
-      (start_of_year.beginning_of_month..end_of_year.end_of_month)
+      start_of_year..end_of_year
     end
 
     private
