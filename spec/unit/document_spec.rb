@@ -4,8 +4,13 @@ require "sie"
 require "active_support/core_ext/date/calculations"
 
 describe Sie::Document, "#render" do
-  let(:from_date) { Date.new(2011, 9, 1) }
-  let(:to_date) { Date.new(2013, 12, 31) }
+  let(:financial_years) {
+    [
+      Date.new(2011, 1, 1)..Date.new(2011, 12, 31),
+      Date.new(2012, 1, 1)..Date.new(2012, 12, 31),
+      Date.new(2013, 1, 1)..Date.new(2013, 12, 31),
+    ]
+  }
   let(:generated_on) { Date.yesterday }
   let(:accounts) {
     [
@@ -15,17 +20,17 @@ describe Sie::Document, "#render" do
   let(:vouchers) {
     [
       {
-        creditor: false, type: :invoice, number: 1, booked_on: from_date + 2, description: "Invoice 1",
+        creditor: false, type: :invoice, number: 1, booked_on: Date.new(2011, 9, 3), description: "Invoice 1",
         voucher_lines: [
-          { account_number: 1500, amount: 512.0, booked_on: from_date + 2, description: "Item 1" },
-          { account_number: 3100, amount: -512.0, booked_on: from_date + 2, description: "Item 1" },
+          { account_number: 1500, amount: 512.0, booked_on: Date.new(2011, 9, 3), description: "Item 1" },
+          { account_number: 3100, amount: -512.0, booked_on: Date.new(2011, 9, 3), description: "Item 1" },
         ]
       },
       {
-        creditor: true, type: :payment, number: 2, booked_on: from_date + 365, description: "Payout 1",
+        creditor: true, type: :payment, number: 2, booked_on: Date.new(2012, 8, 31), description: "Payout 1",
         voucher_lines: [
-          { account_number: 2400, amount: 256.0, booked_on: from_date + 365, description: "Payout line 1" },
-          { account_number: 1970, amount: -256.0, booked_on: from_date + 365, description: "Payout line 2" },
+          { account_number: 2400, amount: 256.0, booked_on: Date.new(2012, 8, 31), description: "Payout line 1" },
+          { account_number: 1970, amount: -256.0, booked_on: Date.new(2012, 8, 31), description: "Payout line 2" },
         ]
       }
     ]
@@ -34,7 +39,7 @@ describe Sie::Document, "#render" do
   class TestDataSource
     attr_accessor :program, :program_version, :generated_on, :company_name,
       :accounts, :balance_account_numbers, :closing_account_numbers,
-      :vouchers, :from_date, :to_date, :financial_year_start_month
+      :vouchers, :financial_years
 
     # vouchers is not part of the expected interface so making it private.
     #
@@ -60,15 +65,13 @@ describe Sie::Document, "#render" do
 
   let(:doc) {
     data_source = TestDataSource.new(
-      from_date: from_date,
-      to_date: to_date,
       accounts: accounts,
       vouchers: vouchers,
       program: "Foonomic",
       program_version: "3.11",
       generated_on: generated_on,
       company_name: "Foocorp",
-      financial_year_start_month: 1,
+      financial_years: financial_years,
       balance_account_numbers: [ 1500, 2400 ],
       closing_account_numbers: [ 3100 ]
     )

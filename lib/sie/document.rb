@@ -1,5 +1,4 @@
 require "attr_extras"
-require "sie/financial_years"
 require "sie/document/voucher_series"
 require "sie/document/renderer"
 require "active_support/core_ext/module/delegation"
@@ -24,7 +23,7 @@ module Sie
 
     delegate :program, :program_version, :generated_on, :company_name,
       :accounts, :balance_account_numbers, :closing_account_numbers,
-      :balance_before, :each_voucher, :from_date, :to_date, :financial_year_start_month,
+      :balance_before, :each_voucher,
       to: :data_source
 
     def add_header
@@ -111,10 +110,7 @@ module Sie
     end
 
     def financial_years
-      FinancialYears.between(
-        from_date, to_date,
-        start_month: financial_year_start_month,
-      ).reverse
+      data_source.financial_years.sort_by { |date_range| date_range.first }.reverse
     end
 
     def voucher_series(creditor, type)

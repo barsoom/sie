@@ -38,25 +38,21 @@ class YourDataSource
     Date.today
   end
 
-  def from_date
-    Date.today
-  end
-
-  def to_date
-    Date.today
+  def financial_years
+    [
+      Date.new(2011, 1, 1)..Date.new(2011, 12, 31),
+      Date.new(2012, 1, 1)..Date.new(2012, 12, 31),
+      Date.new(2013, 1, 1)..Date.new(2013, 12, 31),
+    ]
   end
 
   def company_name
     "Your company"
   end
 
-  def financial_year_start_month
-    1
-  end
-
   def accounts
     [
-      { number: 1500, description: "Customer ledger" }
+      { number: 1500, description: "Customer ledger" },
     ]
   end
 
