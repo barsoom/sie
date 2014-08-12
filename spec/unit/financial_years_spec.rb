@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe Sie::Document::FinancialYears, ".between" do
+describe Sie::FinancialYears, ".between" do
   it "gives us the financial years between from_date and to_date" do
-    Sie::Document::FinancialYears.between(
+    Sie::FinancialYears.between(
       Date.new(2011, 1, 1),
       Date.new(2011, 12, 31),
       start_month: 1,
@@ -12,7 +12,7 @@ describe Sie::Document::FinancialYears, ".between" do
   end
 
   it "gives us the financial years over multiple years" do
-    Sie::Document::FinancialYears.between(
+    Sie::FinancialYears.between(
       Date.new(2011, 9, 1),
       Date.new(2013, 12, 31),
       start_month: 1,
@@ -24,7 +24,7 @@ describe Sie::Document::FinancialYears, ".between" do
   end
 
   it "normalizes start and end date for compatibility with other systems" do
-    Sie::Document::FinancialYears.between(
+    Sie::FinancialYears.between(
       Date.new(2011, 9, 15),
       Date.new(2011, 10, 10),
       start_month: 1,
@@ -34,7 +34,7 @@ describe Sie::Document::FinancialYears, ".between" do
   end
 
   it "uses the start month" do
-    Sie::Document::FinancialYears.between(
+    Sie::FinancialYears.between(
       Date.new(2011, 9, 1),
       Date.new(2014, 1, 31),
       start_month: 5,

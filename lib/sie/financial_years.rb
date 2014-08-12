@@ -1,6 +1,6 @@
 require "active_support/time"
 
-class Sie::Document
+module Sie
   class FinancialYears
     method_object :between,
       :from_date, :to_date, [ :start_month ]
