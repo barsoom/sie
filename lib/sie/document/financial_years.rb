@@ -3,7 +3,7 @@ require "active_support/time"
 class Sie::Document
   class FinancialYears
     method_object :between,
-      :start_month, :from_date, :to_date
+      :from_date, :to_date, [ :start_month ]
 
     def between
       from_date.year.upto(to_date.year).map { |year|

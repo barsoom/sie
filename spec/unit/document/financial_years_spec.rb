@@ -3,9 +3,9 @@ require "spec_helper"
 describe Sie::Document::FinancialYears, ".between" do
   it "gives us the financial years between from_date and to_date" do
     Sie::Document::FinancialYears.between(
-      1,
       Date.new(2011, 1, 1),
-      Date.new(2011, 12, 31)
+      Date.new(2011, 12, 31),
+      start_month: 1,
     ).should == [
       Date.new(2011, 1, 1)..Date.new(2011, 12, 31)
     ]
@@ -13,9 +13,9 @@ describe Sie::Document::FinancialYears, ".between" do
 
   it "gives us the financial years over multiple years" do
     Sie::Document::FinancialYears.between(
-      1,
       Date.new(2011, 9, 1),
-      Date.new(2013, 12, 31)
+      Date.new(2013, 12, 31),
+      start_month: 1,
     ).should == [
       Date.new(2011, 1, 1)..Date.new(2011, 12, 31),
       Date.new(2012, 1, 1)..Date.new(2012, 12, 31),
@@ -25,9 +25,9 @@ describe Sie::Document::FinancialYears, ".between" do
 
   it "normalizes start and end date for compatibility with other systems" do
     Sie::Document::FinancialYears.between(
-      1,
       Date.new(2011, 9, 15),
-      Date.new(2011, 10, 10)
+      Date.new(2011, 10, 10),
+      start_month: 1,
     ).should == [
       Date.new(2011, 1, 1)..Date.new(2011, 12, 31),
     ]
@@ -35,9 +35,9 @@ describe Sie::Document::FinancialYears, ".between" do
 
   it "uses the start month" do
     Sie::Document::FinancialYears.between(
-      5,
       Date.new(2011, 9, 1),
-      Date.new(2014, 1, 31)
+      Date.new(2014, 1, 31),
+      start_month: 5,
     ).should == [
       Date.new(2011, 5, 1)..Date.new(2012, 4, 30),
       Date.new(2012, 5, 1)..Date.new(2013, 4, 30),

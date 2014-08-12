@@ -110,7 +110,10 @@ class Sie::Document
   end
 
   def financial_years
-    FinancialYears.between(financial_year_start_month, from_date, to_date).reverse
+    FinancialYears.between(
+      from_date, to_date,
+      start_month: financial_year_start_month,
+    ).reverse
   end
 
   def voucher_series(creditor, type)
