@@ -202,7 +202,7 @@ describe Sie::Document, "#render" do
       ]
     }
 
-    it "ensures there are at least two lines" do
+    it "reads the series from the voucher" do
       expect(indexed_entry("ver", 0).attributes["serie"]).to eq("X")
     end
   end
