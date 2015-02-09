@@ -78,8 +78,11 @@ class YourDataSource
   def each_voucher(&block)
     [
       {
-        creditor: false, type: :invoice, number: 1,
-        booked_on: Date.today, description: "Invoice 1",
+        # "creditor" and "type" is used to find the series, you can replace
+        # that with "series" if the automatic lookup doesn't work for you.
+        creditor: false, type: :invoice,
+
+        number: 1, booked_on: Date.today, description: "Invoice 1",
         voucher_lines: [
           {
             account_number: 1500, amount: 512.0,
