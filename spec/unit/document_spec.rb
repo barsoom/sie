@@ -195,6 +195,18 @@ describe Sie::Document, "#render" do
     end
   end
 
+  context "with a series defined" do
+    let(:vouchers) {
+      [
+        build_voucher(series: "X"),
+      ]
+    }
+
+    it "reads the series from the voucher" do
+      expect(indexed_entry("ver", 0).attributes["serie"]).to eq("X")
+    end
+  end
+
   private
 
   def build_voucher(attributes)

@@ -73,14 +73,17 @@ module Sie
 
 
     def add_voucher(opts)
-      creditor      = opts.fetch(:creditor)
-      type          = opts.fetch(:type)
-      number        = opts.fetch(:number)
-      booked_on     = opts.fetch(:booked_on)
-      description   = opts.fetch(:description).slice(0, DESCRIPTION_LENGTH_MAX)
-      voucher_lines = opts.fetch(:voucher_lines)
+      number         = opts.fetch(:number)
+      booked_on      = opts.fetch(:booked_on)
+      description    = opts.fetch(:description).slice(0, DESCRIPTION_LENGTH_MAX)
+      voucher_lines  = opts.fetch(:voucher_lines)
+      voucher_series = opts.fetch(:series) {
+        creditor = opts.fetch(:creditor)
+        type = opts.fetch(:type)
+        VoucherSeries.for(creditor, type)
+      }
 
-      add_line("VER", voucher_series(creditor, type), number, booked_on, description)
+      add_line("VER", voucher_series, number, booked_on, description)
 
       add_array do
         voucher_lines.each do |line|
@@ -111,10 +114,6 @@ module Sie
 
     def financial_years
       data_source.financial_years.sort_by { |date_range| date_range.first }.reverse
-    end
-
-    def voucher_series(creditor, type)
-      VoucherSeries.for(creditor, type)
     end
   end
 end
