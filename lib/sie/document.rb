@@ -71,7 +71,6 @@ module Sie
       end
     end
 
-
     def add_voucher(opts)
       number         = opts.fetch(:number)
       booked_on      = opts.fetch(:booked_on)
