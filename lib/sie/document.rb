@@ -77,11 +77,11 @@ module Sie
       booked_on      = opts.fetch(:booked_on)
       description    = opts.fetch(:description).slice(0, DESCRIPTION_LENGTH_MAX)
       voucher_lines  = opts.fetch(:voucher_lines)
-      voucher_series = opts.fetch(:series) do
+      voucher_series = opts.fetch(:series) {
         creditor = opts.fetch(:creditor)
         type = opts.fetch(:type)
         VoucherSeries.for(creditor, type)
-      end
+      }
 
       add_line("VER", voucher_series, number, booked_on, description)
 

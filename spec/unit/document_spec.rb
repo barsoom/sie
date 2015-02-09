@@ -198,7 +198,7 @@ describe Sie::Document, "#render" do
   context "with a series defined" do
     let(:vouchers) {
       [
-        build_voucher(series: "X")
+        build_voucher(series: "X"),
       ]
     }
 
