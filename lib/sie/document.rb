@@ -14,6 +14,7 @@ module Sie
       add_header
       add_financial_years
       add_accounts
+      add_dimensions
       add_balances
       add_vouchers
 
@@ -24,7 +25,7 @@ module Sie
 
     delegate :program, :program_version, :generated_on, :company_name,
       :accounts, :balance_account_numbers, :closing_account_numbers,
-      :balance_before, :each_voucher,
+      :balance_before, :each_voucher, :dimensions,
       to: :data_source
 
     def add_header
@@ -66,6 +67,20 @@ module Sie
       end
     end
 
+    def add_dimensions
+      dimensions.each do |dimension|
+        dimension_number = dimension.fetch(:number)
+        dimension_description = dimension.fetch(:description)
+        add_line("DIM", dimension_number, dimension_description)
+
+        dimension.fetch(:objects).each do |object|
+          object_number = object.fetch(:number)
+          object_description = object.fetch(:description)
+          add_line("OBJEKT", dimension_number, object_number, object_description)
+        end
+      end
+    end
+
     def add_vouchers
       each_voucher do |voucher|
         add_voucher(voucher)
@@ -90,17 +105,18 @@ module Sie
           account_number = line.fetch(:account_number)
           amount         = line.fetch(:amount)
           booked_on      = line.fetch(:booked_on)
+          dimensions     = line.fetch(:dimensions, {}).to_a.flatten
           # Some SIE-importers (fortnox) cannot handle descriptions longer than 30 characters,
           # but the specification has no limit.
           description    = line.fetch(:description).slice(0, DESCRIPTION_LENGTH_MAX)
 
-          add_line("TRANS", account_number, Renderer::EMPTY_ARRAY, amount, booked_on, description)
+          add_line("TRANS", account_number, dimensions, amount, booked_on, description)
 
           # Some consumers of SIE cannot handle single voucher lines (fortnox), so add another empty one to make
           # it balance. The spec just requires the sum of lines to be 0, so single lines with zero amount would conform,
           # but break for these implementations.
           if voucher_lines.size < 2 && amount.zero?
-            add_line("TRANS", account_number, Renderer::EMPTY_ARRAY, amount, booked_on, description)
+            add_line("TRANS", account_number, dimensions, amount, booked_on, description)
           end
         end
       end

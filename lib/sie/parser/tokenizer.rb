@@ -16,7 +16,7 @@ module Sie
           move_to_next_character
           break unless current_character.value
 
-          if consume?
+          if consume? && !current_character.end_of_array?
             if quoted?
               consume_quoted_value
             else

@@ -22,15 +22,35 @@ describe Sie::Document, "#render" do
       {
         creditor: false, type: :invoice, number: 1, booked_on: Date.new(2011, 9, 3), description: "Invoice 1",
         voucher_lines: [
-          { account_number: 1500, amount: 512.0, booked_on: Date.new(2011, 9, 3), description: "Item 1" },
-          { account_number: 3100, amount: -512.0, booked_on: Date.new(2011, 9, 3), description: "Item 1" },
+          {
+            account_number: 1500, amount: 512.0, booked_on: Date.new(2011, 9, 3), description: "Item 1",
+            dimensions: { 6 => 1 }
+          },
+          {
+            account_number: 3100, amount: -512.0, booked_on: Date.new(2011, 9, 3), description: "Item 1",
+            dimensions: { 6 => 1 }
+          },
         ]
       },
       {
         creditor: true, type: :payment, number: 2, booked_on: Date.new(2012, 8, 31), description: "Payout 1",
         voucher_lines: [
-          { account_number: 2400, amount: 256.0, booked_on: Date.new(2012, 8, 31), description: "Payout line 1" },
-          { account_number: 1970, amount: -256.0, booked_on: Date.new(2012, 8, 31), description: "Payout line 2" },
+          {
+            account_number: 2400, amount: 256.0, booked_on: Date.new(2012, 8, 31), description: "Payout line 1"
+          },
+          {
+            account_number: 1970, amount: -256.0, booked_on: Date.new(2012, 8, 31), description: "Payout line 2"
+          },
+        ]
+      }
+    ]
+  }
+  let(:dimensions) {
+    [
+      {
+        number: 6, description: "Project",
+        objects: [
+          { number: 1, description: "Education" }
         ]
       }
     ]
@@ -39,7 +59,7 @@ describe Sie::Document, "#render" do
   class TestDataSource
     attr_accessor :program, :program_version, :generated_on, :company_name,
       :accounts, :balance_account_numbers, :closing_account_numbers,
-      :vouchers, :financial_years
+      :vouchers, :financial_years, :dimensions
 
     # vouchers is not part of the expected interface so making it private.
     #
@@ -73,9 +93,10 @@ describe Sie::Document, "#render" do
       company_name: "Foocorp",
       financial_years: financial_years,
       balance_account_numbers: [ 1500, 2400 ],
-      closing_account_numbers: [ 3100 ]
+      closing_account_numbers: [ 3100 ],
+      dimensions: dimensions
     )
-    doc = Sie::Document.new(data_source)
+    Sie::Document.new(data_source)
   }
 
   let(:sie_file) { Sie::Parser.new.parse(doc.render) }
@@ -104,6 +125,14 @@ describe Sie::Document, "#render" do
 
   it "has accounts" do
     expect(indexed_entry_attributes("konto", 0)).to eq("kontonr" => "1500", "kontonamn" => "Customer ledger")
+  end
+
+  it "has dimensions" do
+    expect(indexed_entry_attributes("dim", 0)).to eq("dimensionsnr" => "6", "namn" => "Project")
+  end
+
+  it "has objects" do
+    expect(indexed_entry_attributes("objekt", 0)).to eq("dimensionsnr" => "6", "objektnr" => "1", "objektnamn" => "Education")
   end
 
   it "has balances brought forward (ingående balans)" do
@@ -137,11 +166,13 @@ describe Sie::Document, "#render" do
     )
     expect(indexed_voucher_entries(0)[0].attributes).to eq(
       "kontonr" => "1500", "belopp" =>  "512.0",
-      "transdat" => "20110903", "transtext" => "Item 1"
+      "transdat" => "20110903", "transtext" => "Item 1",
+      "objektlista" => [{"dimensionsnr" => "6", "objektnr" => "1"}]
     )
     expect(indexed_voucher_entries(0)[1].attributes).to eq(
       "kontonr" => "3100", "belopp" => "-512.0",
-      "transdat" => "20110903", "transtext" => "Item 1"
+      "transdat" => "20110903", "transtext" => "Item 1",
+      "objektlista" => [{"dimensionsnr" => "6", "objektnr" => "1"}]
     )
 
     expect(indexed_entry("ver", 1).attributes).to eq(
@@ -150,11 +181,13 @@ describe Sie::Document, "#render" do
     )
     expect(indexed_voucher_entries(1)[0].attributes).to eq(
       "kontonr" => "2400", "belopp" =>  "256.0",
-      "transdat" => "20120831", "transtext" => "Payout line 1"
+      "transdat" => "20120831", "transtext" => "Payout line 1",
+      "objektlista" => []
     )
     expect(indexed_voucher_entries(1)[1].attributes).to eq(
       "kontonr" => "1970", "belopp" => "-256.0",
-      "transdat" => "20120831", "transtext" => "Payout line 2"
+      "transdat" => "20120831", "transtext" => "Payout line 2",
+      "objektlista" => []
     )
   end
 

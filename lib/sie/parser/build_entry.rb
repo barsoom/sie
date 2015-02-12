@@ -21,16 +21,32 @@ module Sie
         entry = build_empty_entry
         entry_type = first_token.entry_type
 
-        entry_type.each_with_index do |entry_type, i|
-          break if i >= tokens.size
+        ti = ai = 0
+        while ti < tokens.size && ai < entry_type.size
+          attr_entry_type = entry_type[ai]
 
-          if entry_type.is_a?(Hash)
-            skip_array(i)
-            next
+          if attr_entry_type.is_a?(Hash)
+            label = attr_entry_type[:name]
+            type = attr_entry_type[:type]
+            entry.attributes[label] ||= []
+
+            ti += 1
+            hash_tokens = []
+            while !tokens[ti].is_a?(Sie::Parser::Tokenizer::EndArrayToken)
+              hash_tokens << tokens[ti].value
+              ti += 1
+            end
+
+            hash_tokens.each_slice(type.size).each do |slice|
+              entry.attributes[label] << Hash[type.zip(slice)]
+            end
           else
-            label = entry_type
-            entry.attributes[label] = tokens[i].value
+            label = attr_entry_type
+            entry.attributes[label] = tokens[ti].value
           end
+
+          ti += 1
+          ai += 1
         end
 
         entry
@@ -42,15 +58,6 @@ module Sie
 
       def raise_invalid_entry_error
         raise InvalidEntryError, "Unknown entry type: #{first_token.label}"
-      end
-
-      def skip_array(tokens_index)
-        if tokens[tokens_index].is_a?(Tokenizer::BeginArrayToken) &&
-         !tokens[tokens_index + 1].is_a?(Tokenizer::EndArrayToken)
-          raise "We currently don't support metadata within entries as we haven't had a need for it yet (the data between {} in #{line})."
-        end
-
-        tokens.reject! { |token| token.is_a?(Tokenizer::EndArrayToken) }
       end
     end
   end
