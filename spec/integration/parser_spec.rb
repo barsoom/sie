@@ -18,7 +18,39 @@ describe Sie::Parser do
     end
   end
 
-  def open_file(fixture_file)
-    File.open(File.join(File.dirname(__FILE__), "../#{fixture_file}"))
+  context 'unknown entries' do
+    let(:file_with_unknown_entries) { "fixtures/sie_file_with_unknown_entries.se" }
+
+    context 'lenient parser' do
+      let(:parser) {Sie::Parser.new(lenient: true)}
+
+      it "handles unknown entries without raising error" do
+        open_file(file_with_unknown_entries) do |f|
+          expect { parser.parse(f) }.not_to raise_error
+        end
+      end
+
+      it "continues to parse the complete file after unknown entries" do
+        open_file(file_with_unknown_entries) do |f|
+          sie_file = parser.parse(f)
+
+          expect(sie_file.entries_with_label("ver").size).to eq(2)
+        end
+      end
+    end
+
+    context 'rigorous parser' do
+      let(:parser) {Sie::Parser.new}
+
+      it "raises error when encountering unknown entries" do
+        open_file(file_with_unknown_entries) do |f|
+          expect { parser.parse(f) }.to raise_error
+        end
+      end
+    end
+  end
+
+  def open_file(fixture_file, &block)
+    File.open(File.join(File.dirname(__FILE__), "../#{fixture_file}"), &block)
   end
 end
