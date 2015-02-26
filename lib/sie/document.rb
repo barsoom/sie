@@ -5,9 +5,10 @@ require "active_support/core_ext/module/delegation"
 
 module Sie
   class Document
-    pattr_initialize :data_source
     # Because fortnox imposes these limits
     DESCRIPTION_LENGTH_MAX = 30
+
+    pattr_initialize :data_source
 
     def render
       add_header
