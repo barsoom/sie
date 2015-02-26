@@ -16,7 +16,9 @@ module Sie
         if first_token.known_entry_type?
           build_entry(entry, first_token, tokens)
         else
-          raise "Unknown entry type: #{first_token.label}" unless lenient
+          unless lenient
+            raise "Unknown entry type: #{first_token.label}. Pass 'lenient: true' to Parser.new to avoid exception."
+          end
         end
 
         entry
