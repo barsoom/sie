@@ -5,13 +5,14 @@ require "sie/parser/sie_file"
 module Sie
   class Parser
     class LineParser
-      pattr_initialize :line, [:lenient]
+      pattr_initialize :line, [ :lenient ]
 
       def parse
         tokens = tokenize(line)
         first_token = tokens.shift
 
         entry = Entry.new(first_token.label)
+
         if first_token.known_entry_type?
           build_entry(entry, first_token, tokens)
         else

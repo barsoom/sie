@@ -18,11 +18,11 @@ describe Sie::Parser do
     end
   end
 
-  context 'unknown entries' do
+  context "with unknown entries" do
     let(:file_with_unknown_entries) { "fixtures/sie_file_with_unknown_entries.se" }
 
-    context 'lenient parser' do
-      let(:parser) {Sie::Parser.new(lenient: true)}
+    context "using a lenient parser" do
+      let(:parser) { Sie::Parser.new(lenient: true) }
 
       it "handles unknown entries without raising error" do
         open_file(file_with_unknown_entries) do |f|
@@ -39,8 +39,8 @@ describe Sie::Parser do
       end
     end
 
-    context 'rigorous parser' do
-      let(:parser) {Sie::Parser.new}
+    context "with strict parser" do
+      let(:parser) { Sie::Parser.new }
 
       it "raises error when encountering unknown entries" do
         open_file(file_with_unknown_entries) do |f|

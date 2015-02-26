@@ -9,6 +9,8 @@ module Sie
     END_OF_ARRAY       = "}"
     ENTRY              = /^#/
 
+    attr_private :options
+
     def initialize(options = {})
       @options = options
     end
@@ -36,8 +38,6 @@ module Sie
     end
 
     private
-
-    attr_reader :options
 
     def lenient
       options.fetch(:lenient, false)

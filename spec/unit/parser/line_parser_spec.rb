@@ -14,10 +14,10 @@ describe Sie::Parser::LineParser, "parse" do
     })
   end
 
-  context "unknown entry" do
+  context "with unknown entry" do
     let(:line) { "#MOMSKOD 2611 10"}
 
-    context "lenient parser" do
+    context "using a lenient parser" do
       let(:parser) { Sie::Parser::LineParser.new(line, lenient: true) }
 
       it "raises no error when encountering unknown entries" do
@@ -25,7 +25,7 @@ describe Sie::Parser::LineParser, "parse" do
       end
     end
 
-    context "rigorous parser" do
+    context "using a strict parser" do
       let(:parser) { Sie::Parser::LineParser.new(line) }
 
       it "raises error when encountering unknown entries" do
