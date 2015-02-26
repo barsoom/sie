@@ -124,6 +124,12 @@ File.open("path/to/file.se") do |f|
 end
 ```
 
+By default the parser will raise an error if it encounters unknown entry types. Use the lenient option to avoid this:
+
+```ruby
+parser = Sie::Parser.new(lenient: true)
+```
+
 For more info, see the specs.
 
 ## Developing
