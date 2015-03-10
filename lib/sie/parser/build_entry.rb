@@ -21,35 +21,40 @@ module Sie
         entry = build_empty_entry
         entry_type = first_token.entry_type
 
-        ti = ai = 0
-        while ti < tokens.size && ai < entry_type.size
-          attr_entry_type = entry_type[ai]
-
-          if attr_entry_type.is_a?(Hash)
-            label = attr_entry_type[:name]
-            type = attr_entry_type[:type]
-            entry.attributes[label] ||= []
-
-            ti += 1
-            hash_tokens = []
-            while !tokens[ti].is_a?(Sie::Parser::Tokenizer::EndArrayToken)
-              hash_tokens << tokens[ti].value
-              ti += 1
-            end
-
-            hash_tokens.each_slice(type.size).each do |slice|
-              entry.attributes[label] << Hash[type.zip(slice)]
-            end
+        attributes_with_tokens(entry_type).each do |attr, *attr_tokens|
+          label = attr.is_a?(Hash) ? attr[:name] : attr
+          if attr_tokens.size == 1
+            entry.attributes[label] = attr_tokens.first
           else
-            label = attr_entry_type
-            entry.attributes[label] = tokens[ti].value
+            values = attr_tokens.each_slice(attr[:type].size).map { |slice| Hash[attr[:type].zip(slice)] }
+            entry.attributes[label] = values
           end
-
-          ti += 1
-          ai += 1
         end
 
         entry
+      end
+
+      def attributes_with_tokens(line_entry_type)
+        line_entry_type.map { |attr_entry_type|
+          if attr_entry_type.is_a?(String)
+            token = tokens.shift
+            next unless token
+            [attr_entry_type, token.value]
+          else
+            token = tokens.shift
+            if !token.is_a?(Tokenizer::BeginArrayToken)
+              raise "ERROR"
+            end
+
+            hash_tokens = []
+            while token = tokens.shift
+              break if token.is_a?(Tokenizer::EndArrayToken)
+              hash_tokens << token.value
+            end
+
+            [attr_entry_type, *hash_tokens]
+          end
+        }.compact
       end
 
       def build_empty_entry
