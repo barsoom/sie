@@ -29,7 +29,7 @@ describe Sie::Parser::LineParser, "parse" do
       let(:parser) { Sie::Parser::LineParser.new(line) }
 
       it "raises error when encountering unknown entries" do
-        expect { parser.parse }.to raise_error
+        expect { parser.parse }.to raise_error(/Unknown entry type/)
       end
     end
   end

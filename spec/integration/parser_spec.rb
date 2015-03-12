@@ -44,7 +44,7 @@ describe Sie::Parser do
 
       it "raises error when encountering unknown entries" do
         open_file(file_with_unknown_entries) do |f|
-          expect { parser.parse(f) }.to raise_error
+          expect { parser.parse(f) }.to raise_error(/Unknown entry type: momskod.+Pass 'lenient: true'/)
         end
       end
     end

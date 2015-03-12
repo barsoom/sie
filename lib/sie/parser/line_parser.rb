@@ -1,6 +1,7 @@
 require "sie/parser/tokenizer"
 require "sie/parser/entry"
 require "sie/parser/sie_file"
+require "sie/parser/build_entry"
 
 module Sie
   class Parser
@@ -10,18 +11,7 @@ module Sie
       def parse
         tokens = tokenize(line)
         first_token = tokens.shift
-
-        entry = Entry.new(first_token.label)
-
-        if first_token.known_entry_type?
-          build_entry(entry, first_token, tokens)
-        else
-          unless lenient
-            raise "Unknown entry type: #{first_token.label}. Pass 'lenient: true' to Parser.new to avoid exception."
-          end
-        end
-
-        entry
+        build_entry(first_token, tokens)
       end
 
       private
@@ -30,29 +20,8 @@ module Sie
         Tokenizer.new(line).tokenize
       end
 
-      def build_entry(entry, first_token, tokens)
-        entry_type = first_token.entry_type
-
-        entry_type.each_with_index do |entry_type, i|
-          break if i >= tokens.size
-
-          if entry_type.is_a?(Hash)
-            skip_array(tokens, i)
-            next
-          else
-            label = entry_type
-            entry.attributes[label] = tokens[i].value
-          end
-        end
-      end
-
-      def skip_array(tokens, i)
-        if tokens[i].is_a?(Tokenizer::BeginArrayToken) &&
-         !tokens[i+1].is_a?(Tokenizer::EndArrayToken)
-          raise "We currently don't support metadata within entries as we haven't had a need for it yet (the data between {} in #{line})."
-        end
-
-        tokens.reject! { |token| token.is_a?(Tokenizer::EndArrayToken) }
+      def build_entry(first_token, tokens)
+        BuildEntry.call(line, first_token, tokens, lenient)
       end
     end
   end

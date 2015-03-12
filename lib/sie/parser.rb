@@ -39,12 +39,14 @@ module Sie
 
     private
 
-    def lenient
-      options.fetch(:lenient, false)
-    end
-
     def parse_line(line)
       LineParser.new(line, lenient: lenient).parse
+    rescue BuildEntry::InvalidEntryError => ex
+      raise ex, "#{ex.message}. Pass 'lenient: true' to Parser.new to avoid this exception."
+    end
+
+    def lenient
+      options.fetch(:lenient, false)
     end
   end
 end
