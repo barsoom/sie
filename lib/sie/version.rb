@@ -1,3 +1,4 @@
 module Sie
-  VERSION = "2.1.0"
+  # For versioning see: http://semver.org/
+  VERSION = "2.2.0"
 end
