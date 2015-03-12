@@ -10,6 +10,10 @@ module Sie
           @value = value
         end
 
+        def known_entry_type?
+          Sie::Parser::ENTRY_TYPES.has_key?(label)
+        end
+
         def entry_type
           Sie::Parser::ENTRY_TYPES.fetch(label)
         end

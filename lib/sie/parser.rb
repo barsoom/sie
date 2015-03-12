@@ -9,6 +9,12 @@ module Sie
     END_OF_ARRAY       = "}"
     ENTRY              = /^#/
 
+    attr_private :options
+
+    def initialize(options = {})
+      @options = options
+    end
+
     def parse(io)
       stack = []
       sie_file = SieFile.new
@@ -33,8 +39,12 @@ module Sie
 
     private
 
+    def lenient
+      options.fetch(:lenient, false)
+    end
+
     def parse_line(line)
-      LineParser.new(line).parse
+      LineParser.new(line, lenient: lenient).parse
     end
   end
 end

@@ -5,13 +5,32 @@ require "sie/parser/sie_file"
 module Sie
   class Parser
     class LineParser
-      pattr_initialize :line
+      pattr_initialize :line, [ :lenient ]
 
       def parse
         tokens = tokenize(line)
         first_token = tokens.shift
 
         entry = Entry.new(first_token.label)
+
+        if first_token.known_entry_type?
+          build_entry(entry, first_token, tokens)
+        else
+          unless lenient
+            raise "Unknown entry type: #{first_token.label}. Pass 'lenient: true' to Parser.new to avoid exception."
+          end
+        end
+
+        entry
+      end
+
+      private
+
+      def tokenize(line)
+        Tokenizer.new(line).tokenize
+      end
+
+      def build_entry(entry, first_token, tokens)
         entry_type = first_token.entry_type
 
         entry_type.each_with_index do |entry_type, i|
@@ -25,14 +44,6 @@ module Sie
             entry.attributes[label] = tokens[i].value
           end
         end
-
-        entry
-      end
-
-      private
-
-      def tokenize(line)
-        Tokenizer.new(line).tokenize
       end
 
       def skip_array(tokens, i)
