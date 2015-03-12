@@ -25,7 +25,7 @@ module Sie
           break if i >= tokens.size
 
           if entry_type.is_a?(Hash)
-            skip_array(tokens, i)
+            skip_array(i)
             next
           else
             label = entry_type
@@ -44,9 +44,9 @@ module Sie
         raise InvalidEntryError, "Unknown entry type: #{first_token.label}"
       end
 
-      def skip_array(tokens, i)
-        if tokens[i].is_a?(Tokenizer::BeginArrayToken) &&
-         !tokens[i+1].is_a?(Tokenizer::EndArrayToken)
+      def skip_array(tokens_index)
+        if tokens[tokens_index].is_a?(Tokenizer::BeginArrayToken) &&
+         !tokens[tokens_index + 1].is_a?(Tokenizer::EndArrayToken)
           raise "We currently don't support metadata within entries as we haven't had a need for it yet (the data between {} in #{line})."
         end
 
