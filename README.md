@@ -64,6 +64,18 @@ class YourDataSource
     [ 3100 ]
   end
 
+  def dimensions
+    [
+      {
+        number: 6,
+        description: "Projekt",
+        objects: [
+          { number: 1, description: "Education" }
+        ]
+      }
+    ]
+  end
+
   # Used to calculate balance before (and on) the given date for an account.
   def balance_before(account_number, date)
     # ActiveRecord example:
@@ -90,7 +102,8 @@ class YourDataSource
           },
           {
             account_number: 3100, amount: -512.0,
-            booked_on: Date.today, description: "Item 1"
+            booked_on: Date.today, description: "Item 1",
+            dimensions: { 6 => 1 }
           },
         ]
       }
