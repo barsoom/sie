@@ -105,7 +105,7 @@ module Sie
           account_number = line.fetch(:account_number)
           amount         = line.fetch(:amount)
           booked_on      = line.fetch(:booked_on)
-          dimensions     = line.fetch(:dimensions, {}).to_a.flatten
+          dimensions     = line.fetch(:dimensions, {}).flatten
           # Some SIE-importers (fortnox) cannot handle descriptions longer than 30 characters,
           # but the specification has no limit.
           description    = line.fetch(:description).slice(0, DESCRIPTION_LENGTH_MAX)

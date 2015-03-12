@@ -19,14 +19,16 @@ module Sie
 
       def build_complete_entry
         entry = build_empty_entry
-        entry_type = first_token.entry_type
 
-        attributes_with_tokens(entry_type).each do |attr, *attr_tokens|
+        attributes_with_tokens.each do |attr, *attr_tokens|
           label = attr.is_a?(Hash) ? attr[:name] : attr
+
           if attr_tokens.size == 1
             entry.attributes[label] = attr_tokens.first
           else
-            values = attr_tokens.each_slice(attr[:type].size).map { |slice| Hash[attr[:type].zip(slice)] }
+            values = attr_tokens.
+              each_slice(attr[:type].size).
+              map { |slice| Hash[attr[:type].zip(slice)] }
             entry.attributes[label] = values
           end
         end
@@ -34,16 +36,16 @@ module Sie
         entry
       end
 
-      def attributes_with_tokens(line_entry_type)
+      def attributes_with_tokens
         line_entry_type.map { |attr_entry_type|
+          token = tokens.shift
+          next unless token
+
           if attr_entry_type.is_a?(String)
-            token = tokens.shift
-            next unless token
             [attr_entry_type, token.value]
           else
-            token = tokens.shift
-            if !token.is_a?(Tokenizer::BeginArrayToken)
-              raise "ERROR"
+            unless token.is_a?(Tokenizer::BeginArrayToken)
+              raise IOError, "Unexpected token #{token.inspect}"
             end
 
             hash_tokens = []
@@ -59,6 +61,10 @@ module Sie
 
       def build_empty_entry
         Entry.new(first_token.label)
+      end
+
+      def line_entry_type
+        first_token.entry_type
       end
 
       def raise_invalid_entry_error
