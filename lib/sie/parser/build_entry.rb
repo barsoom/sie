@@ -21,14 +21,15 @@ module Sie
         entry = build_empty_entry
 
         attributes_with_tokens.each do |attr, *attr_tokens|
-          label = attr.is_a?(Hash) ? attr[:name] : attr
+          label = attr.is_a?(Hash) ? attr.fetch(:name) : attr
 
           if attr_tokens.size == 1
             entry.attributes[label] = attr_tokens.first
           else
+            type = attr.fetch(:type)
             values = attr_tokens.
-              each_slice(attr[:type].size).
-              map { |slice| Hash[attr[:type].zip(slice)] }
+              each_slice(type.size).
+              map { |slice| Hash[type.zip(slice)] }
             entry.attributes[label] = values
           end
         end
