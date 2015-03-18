@@ -44,7 +44,7 @@ class Sie::Document::Renderer
     when Date
       value.strftime("%Y%m%d")
     when Array
-      subvalues = value.map { |subvalue| format_value(subvalue) }
+      subvalues = value.map { |subvalue| format_value(subvalue.to_s) }
       "{#{subvalues.join(' ')}}"
     when Numeric
       value.to_s

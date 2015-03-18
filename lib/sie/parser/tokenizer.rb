@@ -16,7 +16,7 @@ module Sie
           move_to_next_character
           break unless current_character.value
 
-          if consume? && !current_character.end_of_array?
+          if consume?
             if quoted?
               consume_quoted_value
             else
@@ -42,6 +42,7 @@ module Sie
       def consume_quoted_value
         if current_character.quote?
           @quoted = false
+          @consume = false
         else
           add_to_current_token current_character
         end
