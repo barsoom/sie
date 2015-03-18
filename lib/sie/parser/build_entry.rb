@@ -46,7 +46,7 @@ module Sie
             [attr_entry_type, token.value]
           else
             unless token.is_a?(Tokenizer::BeginArrayToken)
-              raise IOError, "Unexpected token #{token.inspect}"
+              raise InvalidEntryError, "Unexpected token: #{token.inspect}"
             end
 
             hash_tokens = []
