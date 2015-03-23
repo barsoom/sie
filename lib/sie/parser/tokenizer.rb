@@ -42,6 +42,7 @@ module Sie
       def consume_quoted_value
         if current_character.quote?
           @quoted = false
+          @consume = false
         else
           add_to_current_token current_character
         end

@@ -1,7 +1,6 @@
 require "stringio"
 
 class Sie::Document::Renderer
-  EMPTY_ARRAY = :empty_array
   ENCODING = Encoding::CP437
 
   def initialize
@@ -44,8 +43,9 @@ class Sie::Document::Renderer
     case value
     when Date
       value.strftime("%Y%m%d")
-    when EMPTY_ARRAY
-      "{}"
+    when Array
+      subvalues = value.map { |subvalue| format_value(subvalue.to_s) }
+      "{#{subvalues.join(' ')}}"
     when Numeric
       value.to_s
     else

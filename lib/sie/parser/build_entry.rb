@@ -19,38 +19,57 @@ module Sie
 
       def build_complete_entry
         entry = build_empty_entry
-        entry_type = first_token.entry_type
 
-        entry_type.each_with_index do |entry_type, i|
-          break if i >= tokens.size
+        attributes_with_tokens.each do |attr, *attr_tokens|
+          label = attr.is_a?(Hash) ? attr.fetch(:name) : attr
 
-          if entry_type.is_a?(Hash)
-            skip_array(i)
-            next
+          if attr_tokens.size == 1
+            entry.attributes[label] = attr_tokens.first
           else
-            label = entry_type
-            entry.attributes[label] = tokens[i].value
+            type = attr.fetch(:type)
+            values = attr_tokens.
+              each_slice(type.size).
+              map { |slice| Hash[type.zip(slice)] }
+            entry.attributes[label] = values
           end
         end
 
         entry
       end
 
+      def attributes_with_tokens
+        line_entry_type.map { |attr_entry_type|
+          token = tokens.shift
+          next unless token
+
+          if attr_entry_type.is_a?(String)
+            [attr_entry_type, token.value]
+          else
+            unless token.is_a?(Tokenizer::BeginArrayToken)
+              raise InvalidEntryError, "Unexpected token: #{token.inspect}"
+            end
+
+            hash_tokens = []
+            while token = tokens.shift
+              break if token.is_a?(Tokenizer::EndArrayToken)
+              hash_tokens << token.value
+            end
+
+            [attr_entry_type, *hash_tokens]
+          end
+        }.compact
+      end
+
       def build_empty_entry
         Entry.new(first_token.label)
       end
 
-      def raise_invalid_entry_error
-        raise InvalidEntryError, "Unknown entry type: #{first_token.label}"
+      def line_entry_type
+        first_token.entry_type
       end
 
-      def skip_array(tokens_index)
-        if tokens[tokens_index].is_a?(Tokenizer::BeginArrayToken) &&
-         !tokens[tokens_index + 1].is_a?(Tokenizer::EndArrayToken)
-          raise "We currently don't support metadata within entries as we haven't had a need for it yet (the data between {} in #{line})."
-        end
-
-        tokens.reject! { |token| token.is_a?(Tokenizer::EndArrayToken) }
+      def raise_invalid_entry_error
+        raise InvalidEntryError, "Unknown entry type: #{first_token.label}"
       end
     end
   end
