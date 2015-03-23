@@ -30,6 +30,7 @@ module Sie
             values = attr_tokens.
               each_slice(type.size).
               map { |slice| Hash[type.zip(slice)] }
+
             entry.attributes[label] = values
           end
         end
@@ -43,7 +44,7 @@ module Sie
           next unless token
 
           if attr_entry_type.is_a?(String)
-            [attr_entry_type, token.value]
+            [ attr_entry_type, token.value ]
           else
             unless token.is_a?(Tokenizer::BeginArrayToken)
               raise InvalidEntryError, "Unexpected token: #{token.inspect}"
@@ -55,7 +56,7 @@ module Sie
               hash_tokens << token.value
             end
 
-            [attr_entry_type, *hash_tokens]
+            [ attr_entry_type, *hash_tokens ]
           end
         }.compact
       end
