@@ -8,9 +8,10 @@ describe Sie::Parser::BuildEntry, ".call" do
       line = '#TRANS 2400 [] -200 20130101 "Foocorp expense"'
       tokens = Sie::Parser::Tokenizer.new(line).tokenize
       first_token = tokens.shift
-      build_entry = Sie::Parser::BuildEntry.new(line, first_token, tokens, false)
 
-      expect { build_entry.call }.to raise_error(Sie::Parser::BuildEntry::InvalidEntryError)
+      expect {
+        Sie::Parser::BuildEntry.call(line, first_token, tokens, false)
+      }.to raise_error(Sie::Parser::BuildEntry::InvalidEntryError)
     end
   end
 end
