@@ -159,6 +159,11 @@ Getting the latest code and gems:
 
     script/refresh
 
+## Resources
+
+[SIE format specification rev 4B (swedish)](http://www.sie.se/wp-content/uploads/2014/01/SIE_filformat_ver_4B_080930.pdf)
+
+
 ## Contributing
 
 1. Fork it
