@@ -78,8 +78,13 @@ describe Sie::Document, "#render" do
     end
 
     def balance_before(account_number, date)
-      # Faking a fetch based on date and number
-      account_number.to_i + (date.mday * 100).to_f
+      if account_number == 9999
+        # So we can test empty balances.
+        nil
+      else
+        # Faking a fetch based on date and number.
+        account_number.to_i + (date.mday * 100).to_f
+      end
     end
   end
 
@@ -92,8 +97,8 @@ describe Sie::Document, "#render" do
       generated_on: generated_on,
       company_name: "Foocorp",
       financial_years: financial_years,
-      balance_account_numbers: [ 1500, 2400 ],
-      closing_account_numbers: [ 3100 ],
+      balance_account_numbers: [ 1500, 2400, 9999 ],
+      closing_account_numbers: [ 3100, 9999 ],
       dimensions: dimensions
     )
     Sie::Document.new(data_source)
@@ -136,27 +141,30 @@ describe Sie::Document, "#render" do
   end
 
   it "has balances brought forward (ingående balans)" do
-    expect(indexed_entry_attributes("ib", 0)).to eq("arsnr" =>  "0", "konto" => "1500", "saldo" => "1600.0")
-    expect(indexed_entry_attributes("ib", 1)).to eq("arsnr" =>  "0", "konto" => "2400", "saldo" => "2500.0")
-    expect(indexed_entry_attributes("ib", 2)).to eq("arsnr" => "-1", "konto" => "1500", "saldo" => "1600.0")
-    expect(indexed_entry_attributes("ib", 3)).to eq("arsnr" => "-1", "konto" => "2400", "saldo" => "2500.0")
-    expect(indexed_entry_attributes("ib", 4)).to eq("arsnr" => "-2", "konto" => "1500", "saldo" => "1600.0")
-    expect(indexed_entry_attributes("ib", 5)).to eq("arsnr" => "-2", "konto" => "2400", "saldo" => "2500.0")
+    expect(indexed_entry_attributes("ib", 0)).not_to eq("arsnr" =>  "0", "konto" => "9999", "saldo" => "")
+    expect(indexed_entry_attributes("ib", 0)).to     eq("arsnr" =>  "0", "konto" => "1500", "saldo" => "1600.0")
+    expect(indexed_entry_attributes("ib", 1)).to     eq("arsnr" =>  "0", "konto" => "2400", "saldo" => "2500.0")
+    expect(indexed_entry_attributes("ib", 2)).to     eq("arsnr" => "-1", "konto" => "1500", "saldo" => "1600.0")
+    expect(indexed_entry_attributes("ib", 3)).to     eq("arsnr" => "-1", "konto" => "2400", "saldo" => "2500.0")
+    expect(indexed_entry_attributes("ib", 4)).to     eq("arsnr" => "-2", "konto" => "1500", "saldo" => "1600.0")
+    expect(indexed_entry_attributes("ib", 5)).to     eq("arsnr" => "-2", "konto" => "2400", "saldo" => "2500.0")
   end
 
   it "has balances carried forward (utgående balans)" do
-    expect(indexed_entry_attributes("ub", 0)).to eq("arsnr" =>  "0", "konto" => "1500", "saldo" => "4600.0")
-    expect(indexed_entry_attributes("ub", 1)).to eq("arsnr" =>  "0", "konto" => "2400", "saldo" => "5500.0")
-    expect(indexed_entry_attributes("ub", 2)).to eq("arsnr" => "-1", "konto" => "1500", "saldo" => "4600.0")
-    expect(indexed_entry_attributes("ub", 3)).to eq("arsnr" => "-1", "konto" => "2400", "saldo" => "5500.0")
-    expect(indexed_entry_attributes("ub", 4)).to eq("arsnr" => "-2", "konto" => "1500", "saldo" => "4600.0")
-    expect(indexed_entry_attributes("ub", 5)).to eq("arsnr" => "-2", "konto" => "2400", "saldo" => "5500.0")
+    expect(indexed_entry_attributes("ub", 0)).not_to eq("arsnr" =>  "0", "konto" => "9999", "saldo" => "")
+    expect(indexed_entry_attributes("ub", 0)).to     eq("arsnr" =>  "0", "konto" => "1500", "saldo" => "4600.0")
+    expect(indexed_entry_attributes("ub", 1)).to     eq("arsnr" =>  "0", "konto" => "2400", "saldo" => "5500.0")
+    expect(indexed_entry_attributes("ub", 2)).to     eq("arsnr" => "-1", "konto" => "1500", "saldo" => "4600.0")
+    expect(indexed_entry_attributes("ub", 3)).to     eq("arsnr" => "-1", "konto" => "2400", "saldo" => "5500.0")
+    expect(indexed_entry_attributes("ub", 4)).to     eq("arsnr" => "-2", "konto" => "1500", "saldo" => "4600.0")
+    expect(indexed_entry_attributes("ub", 5)).to     eq("arsnr" => "-2", "konto" => "2400", "saldo" => "5500.0")
   end
 
   it "has closing account balances (saldo för resultatkonto)" do
-    expect(indexed_entry_attributes("res", 0)).to eq("ars" =>  "0", "konto" => "3100", "saldo" =>  "6200.0")
-    expect(indexed_entry_attributes("res", 1)).to eq("ars" => "-1", "konto" => "3100", "saldo" =>  "6200.0")
-    expect(indexed_entry_attributes("res", 2)).to eq("ars" => "-2", "konto" => "3100", "saldo" =>  "6200.0")
+    expect(indexed_entry_attributes("res", 0)).not_to eq("ars" =>  "0", "konto" => "9999", "saldo" =>  "")
+    expect(indexed_entry_attributes("res", 0)).to     eq("ars" =>  "0", "konto" => "3100", "saldo" =>  "6200.0")
+    expect(indexed_entry_attributes("res", 1)).to     eq("ars" => "-1", "konto" => "3100", "saldo" =>  "6200.0")
+    expect(indexed_entry_attributes("res", 2)).to     eq("ars" => "-2", "konto" => "3100", "saldo" =>  "6200.0")
   end
 
   it "has vouchers" do

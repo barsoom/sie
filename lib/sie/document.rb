@@ -63,6 +63,11 @@ module Sie
     def add_balance_rows(label, year_index, account_numbers, date, &block)
       account_numbers.each do |account_number|
         balance = balance_before(account_number, date)
+
+        # Accounts with no balance should not be in the SIE-file.
+        # See paragraph 5.17 in the SIE file format guide (Rev. 4B).
+        next unless balance
+
         add_line(label, year_index, account_number, balance)
       end
     end
