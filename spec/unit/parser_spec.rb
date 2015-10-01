@@ -7,9 +7,9 @@ describe Sie::Parser, "parse" do
     sie_file = parser.parse(<<DATA
 #VER "LF" 2222 20130101 "Foocorp expense"
 {
-#TRANS 2400 {} -200 20130101 "Foocorp expense"
-#TRANS 4100 {} 180 20130101 "Widgets from foocorp"
-#TRANS 2611 {} -20 20130101 "VAT"
+    #TRANS 2400 {} -200 20130101 "Foocorp expense"
+    #TRANS 4100 {} 180 20130101 "Widgets from foocorp"
+    #TRANS 2611 {} -20 20130101 "VAT"
 }
 DATA
     )

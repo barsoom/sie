@@ -7,7 +7,7 @@ module Sie
     # of this is duplicated in Character.
     BEGINNING_OF_ARRAY = "{"
     END_OF_ARRAY       = "}"
-    ENTRY              = /^#/
+    ENTRY              = /^\s*#/
 
     attr_private :options
 
