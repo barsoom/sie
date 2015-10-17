@@ -70,7 +70,7 @@ module Sie
         elsif current_character.non_whitespace?
           @consume = true
           add_token StringToken.new(current_character.value)
-        elsif current_character.value != " "
+        elsif current_character.value != " " && current_character.value != "\t"
           raise "Unhandled character: #{current_character.value}"
         end
       end
