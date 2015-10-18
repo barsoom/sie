@@ -43,6 +43,34 @@ describe Sie::Parser::Tokenizer do
                                           ])
   end
 
+  it 'handles escaped quotes in non-quoted strings' do
+    tokenizer = Sie::Parser::Tokenizer.new('String_with_\\"_quote')
+    tokens = tokenizer.tokenize
+
+    expect(token_table_for(tokens)).to eq([
+                                              [ "StringToken", 'String_with_"_quote']
+                                          ])
+  end
+
+  it 'handles escaped backslash in strings' do
+    tokenizer = Sie::Parser::Tokenizer.new('"String with \\\\ backslash"')
+    tokens = tokenizer.tokenize
+
+    expect(token_table_for(tokens)).to eq([
+                                              [ "StringToken", 'String with \\ backslash']
+                                          ])
+  end
+
+  it 'has reasonable behavior for consecutive escape characters' do
+    tokenizer = Sie::Parser::Tokenizer.new('"\\\\\\"\\\\"')
+    tokens = tokenizer.tokenize
+
+    expect(token_table_for(tokens)).to eq([
+                                              [ "StringToken", '\\"\\']
+                                          ])
+
+  end
+
   it 'handles tab character as field separator' do
     tokenizer = Sie::Parser::Tokenizer.new("#TRANS\t2400")
     tokens = tokenizer.tokenize

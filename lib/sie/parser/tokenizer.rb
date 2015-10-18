@@ -25,9 +25,6 @@ module Sie
             when end_array?
               tokens << EndArrayToken.new
 
-            when match = quoted_string?
-              tokens << StringToken.new(match)
-
             when match = string?
               tokens << StringToken.new(match)
 
@@ -68,18 +65,28 @@ module Sie
         scanner.scan(/}/)
       end
 
-      def quoted_string?
-        match = scanner.scan(/"(\\"|[^"])*"/)
+      def string?
+        match = quoted_string? || unquoted_string?
 
         if match
-          match.sub!(/\A"/, "")
-          match.sub!(/"\z/, "")
-          match.gsub!(/\\"/, "\"")
-          match
+          handle_escapes(match)
         end
       end
 
-      def string?
+      def handle_escapes(match)
+        match.gsub!(/\\([\\"])/, "\\1")
+        match
+      end
+
+      def quoted_string?
+        match = scanner.scan(/"(\\"|[^"])*"/)
+        if match
+          match.sub!(/\A"/, "")
+          match.sub!(/"\z/, "")
+        end
+      end
+
+      def unquoted_string?
         scanner.scan(/\S+/)
       end
 
