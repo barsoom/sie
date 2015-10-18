@@ -8,79 +8,83 @@ module Sie
       pattr_initialize :line
 
       def tokenize
-        @tokens = []
-        @consume = false
-        @quoted = false
+        tokens = []
+        check_for_control_characters
 
         loop do
-          move_to_next_character
-          break unless current_character.value
+          case
+            when whitespace?
+              next
 
-          if consume?
-            if quoted?
-              consume_quoted_value
+            when match = entry?
+              tokens << EntryToken.new(match)
+
+            when begin_array?
+              tokens << BeginArrayToken.new
+
+            when end_array?
+              tokens << EndArrayToken.new
+
+            when match = quoted_string?
+              tokens << StringToken.new(match)
+
+            when match = string?
+              tokens << StringToken.new(match)
+
+            when end_of_string?
+              return tokens
+
             else
-              consume_unquoted_value
-            end
-          else
-            add_new_token
+              # We shouldn't get here, but if we do we need to bail out, otherwise we get an infinite loop.
+              fail "Unhandled character in line at position #{scanner.pos}: " + scanner.string
           end
         end
-
-        tokens
       end
 
       private
 
-      attr_query :consume?, :quoted?
-      attr_private :consume, :quoted, :tokens, :current_character
-
-      def move_to_next_character
-        @current_character = Character.new(scanner.getch)
-      end
-
-      def consume_quoted_value
-        if current_character.quote?
-          @quoted = false
-          @consume = false
-        else
-          add_to_current_token current_character
+      def check_for_control_characters
+        if /(.*?)([\x00-\x08\x0a-\x1f\x7f])/.match(line)
+          fail "Unhandled character in line at position #{$1.length + 1}: " + scanner.string
         end
       end
 
-      def consume_unquoted_value
-        if current_character.unquoted_data?
-          add_to_current_token current_character
-        else
-          @consume = false
+      def whitespace?
+        scanner.scan(/[ \t]+/)
+      end
+
+      def entry?
+        match = scanner.scan(/#\S+/)
+        if match
+          match.sub!(/\A#/, "")
         end
       end
 
-      def add_new_token
-        if current_character.entry?
-          @consume = true
-          add_token EntryToken.new
-        elsif current_character.beginning_of_array?
-          add_token BeginArrayToken.new
-        elsif current_character.end_of_array?
-          add_token EndArrayToken.new
-        elsif current_character.quote?
-          @consume = @quoted = true
-          add_token StringToken.new
-        elsif current_character.non_whitespace?
-          @consume = true
-          add_token StringToken.new(current_character.value)
-        elsif current_character.value != " " && current_character.value != "\t"
-          raise "Unhandled character: #{current_character.value}"
+      def begin_array?
+        scanner.scan(/{/)
+      end
+
+      def end_array?
+        scanner.scan(/}/)
+      end
+
+      def quoted_string?
+        match = scanner.scan(/"(\\"|[^"])*"/)
+
+        if match
+          match.sub!(/\A"/, "")
+          match.sub!(/"\z/, "")
+          match.gsub!(/\\"/, "\"")
+          match
         end
       end
 
-      def add_token(token)
-        tokens << token
+      def string?
+        scanner.scan(/\S+/)
       end
 
-      def add_to_current_token(character)
-        tokens.last.value += character.value
+      def end_of_string?
+        scanner.eos?
       end
 
       def scanner

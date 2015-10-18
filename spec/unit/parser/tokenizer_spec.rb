@@ -3,7 +3,7 @@ require "sie/parser/tokenizer"
 
 describe Sie::Parser::Tokenizer do
   it "tokenizes the given line" do
-    tokenizer = Sie::Parser::Tokenizer.new("#TRANS\t2400 {} -200 20130101 \"Foocorp expense\"")
+    tokenizer = Sie::Parser::Tokenizer.new('#TRANS 2400 {} -200 20130101 "Foocorp expense"')
     tokens = tokenizer.tokenize
 
     expect(token_table_for(tokens)).to eq([
@@ -32,6 +32,33 @@ describe Sie::Parser::Tokenizer do
       [ "StringToken", "20130101" ],
       [ "StringToken", "Foocorp expense" ]
     ])
+  end
+
+  it 'handles escaped quotes in quoted strings' do
+    tokenizer = Sie::Parser::Tokenizer.new('"String with \\" quote"')
+    tokens = tokenizer.tokenize
+
+    expect(token_table_for(tokens)).to eq([
+                                              [ "StringToken", 'String with " quote']
+                                          ])
+  end
+
+  it 'handles tab character as field separator' do
+    tokenizer = Sie::Parser::Tokenizer.new("#TRANS\t2400")
+    tokens = tokenizer.tokenize
+
+    expect(token_table_for(tokens)).to eq([
+                                              [ "EntryToken", "TRANS"],
+                                              [ "StringToken", "2400"]
+                                          ])
+  end
+
+  it "rejects control characters" do
+    codes_not_allowed = (0..8).to_a + (10..31).to_a + [127]
+    codes_not_allowed.each do |x|
+      tokenizer = Sie::Parser::Tokenizer.new([x].pack("C"))
+      expect{tokenizer.tokenize}.to raise_error /Unhandled character/
+    end
   end
 
   def token_table_for(tokens)
