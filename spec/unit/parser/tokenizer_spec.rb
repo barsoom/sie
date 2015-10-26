@@ -34,7 +34,7 @@ describe Sie::Parser::Tokenizer do
     ])
   end
 
-  it 'handles escaped quotes in quoted strings' do
+  it "handles escaped quotes in quoted strings" do
     tokenizer = Sie::Parser::Tokenizer.new('"String with \\" quote"')
     tokens = tokenizer.tokenize
 
@@ -43,7 +43,7 @@ describe Sie::Parser::Tokenizer do
                                           ])
   end
 
-  it 'handles escaped quotes in non-quoted strings' do
+  it "handles escaped quotes in non-quoted strings" do
     tokenizer = Sie::Parser::Tokenizer.new('String_with_\\"_quote')
     tokens = tokenizer.tokenize
 
@@ -52,7 +52,7 @@ describe Sie::Parser::Tokenizer do
                                           ])
   end
 
-  it 'handles escaped backslash in strings' do
+  it "handles escaped backslash in strings" do
     tokenizer = Sie::Parser::Tokenizer.new('"String with \\\\ backslash"')
     tokens = tokenizer.tokenize
 
@@ -61,7 +61,7 @@ describe Sie::Parser::Tokenizer do
                                           ])
   end
 
-  it 'has reasonable behavior for consecutive escape characters' do
+  it "has reasonable behavior for consecutive escape characters" do
     tokenizer = Sie::Parser::Tokenizer.new('"\\\\\\"\\\\"')
     tokens = tokenizer.tokenize
 
@@ -71,7 +71,7 @@ describe Sie::Parser::Tokenizer do
 
   end
 
-  it 'handles tab character as field separator' do
+  it "handles tab character as field separator" do
     tokenizer = Sie::Parser::Tokenizer.new("#TRANS\t2400")
     tokens = tokenizer.tokenize
 
@@ -88,6 +88,8 @@ describe Sie::Parser::Tokenizer do
       expect{tokenizer.tokenize}.to raise_error /Unhandled character/
     end
   end
+
+  private
 
   def token_table_for(tokens)
     tokens.map { |token|
