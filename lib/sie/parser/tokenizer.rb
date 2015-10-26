@@ -15,22 +15,16 @@ module Sie
           case
             when whitespace?
               next
-
             when match = entry?
               tokens << EntryToken.new(match)
-
             when begin_array?
               tokens << BeginArrayToken.new
-
             when end_array?
               tokens << EndArrayToken.new
-
             when match = string?
               tokens << StringToken.new(match)
-
             when end_of_string?
               return tokens
-
             else
               # We shouldn't get here, but if we do we need to bail out, otherwise we get an infinite loop.
               fail "Unhandled character in line at position #{scanner.pos}: " + scanner.string
@@ -52,6 +46,7 @@ module Sie
 
       def entry?
         match = scanner.scan(/#\S+/)
+
         if match
           match.sub!(/\A#/, "")
         end
