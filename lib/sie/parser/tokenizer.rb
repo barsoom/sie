@@ -48,7 +48,7 @@ module Sie
         match = scanner.scan(/#\S+/)
 
         if match
-          match.sub!(/\A#/, "")
+          match.sub(/\A#/, "")
         end
       end
 
@@ -68,16 +68,15 @@ module Sie
         end
       end
 
-      def handle_escapes(match)
-        match.gsub!(/\\([\\"])/, "\\1")
-        match
+      def end_of_string?
+        scanner.eos?
       end
 
       def quoted_string?
         match = scanner.scan(/"(\\"|[^"])*"/)
+
         if match
-          match.sub!(/\A"/, "")
-          match.sub!(/"\z/, "")
+          match.sub(/\A"/, "").sub(/"\z/, "")
         end
       end
 
@@ -85,8 +84,8 @@ module Sie
         scanner.scan(/\S+/)
       end
 
-      def end_of_string?
-        scanner.eos?
+      def handle_escapes(match)
+        match.gsub(/\\([\\"])/, "\\1")
       end
 
       def scanner
