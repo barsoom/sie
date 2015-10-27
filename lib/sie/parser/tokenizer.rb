@@ -1,6 +1,5 @@
 require "strscan"
 require "sie/parser/tokenizer/token"
-require "sie/parser/tokenizer/character"
 
 module Sie
   class Parser
@@ -57,18 +56,18 @@ module Sie
       end
 
       def begin_array?
-        scanner.scan(/{/)
+        scanner.scan(/#{Sie::Parser::BEGINNING_OF_ARRAY}/)
       end
 
       def end_array?
-        scanner.scan(/}/)
+        scanner.scan(/#{Sie::Parser::END_OF_ARRAY}/)
       end
 
       def find_string
         match = find_quoted_string || find_unquoted_string
 
         if match
-          handle_escapes(match)
+          remove_unnessesary_escapes(match)
         else
           nil
         end
@@ -92,7 +91,7 @@ module Sie
         scanner.scan(/\S+/)
       end
 
-      def handle_escapes(match)
+      def remove_unnessesary_escapes(match)
         match.gsub(/\\([\\"])/, "\\1")
       end
 

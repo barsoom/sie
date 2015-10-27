@@ -3,10 +3,10 @@ require "sie/parser/line_parser"
 
 module Sie
   class Parser
-    # TODO: Could this format knowledge be centrailized somewhere, some
-    # of this is duplicated in Character.
     BEGINNING_OF_ARRAY = "{"
     END_OF_ARRAY       = "}"
+
+    # TODO: Could this format knowledge be shared with Tokenizer? It's slightly different there.
     ENTRY              = /^\s*#/
 
     attr_private :options

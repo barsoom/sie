@@ -68,7 +68,6 @@ describe Sie::Parser::Tokenizer do
     expect(token_table_for(tokens)).to eq([
                                               [ "StringToken", '\\"\\']
                                           ])
-
   end
 
   it "handles tab character as field separator" do
