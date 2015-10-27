@@ -13,23 +13,25 @@ module Sie
 
         loop do
           case
-            when whitespace?
-              next
-            when match = entry?
-              tokens << EntryToken.new(match)
-            when begin_array?
-              tokens << BeginArrayToken.new
-            when end_array?
-              tokens << EndArrayToken.new
-            when match = string?
-              tokens << StringToken.new(match)
-            when end_of_string?
-              return tokens
-            else
-              # We shouldn't get here, but if we do we need to bail out, otherwise we get an infinite loop.
-              fail "Unhandled character in line at position #{scanner.pos}: " + scanner.string
+          when whitespace?
+            next
+          when match = find_entry
+            tokens << EntryToken.new(match)
+          when begin_array?
+            tokens << BeginArrayToken.new
+          when end_array?
+            tokens << EndArrayToken.new
+          when match = find_string
+            tokens << StringToken.new(match)
+          when end_of_string?
+            break
+          else
+            # We shouldn't get here, but if we do we need to bail out, otherwise we get an infinite loop.
+            fail "Unhandled character in line at position #{scanner.pos}: " + scanner.string
           end
         end
+
+        tokens
       end
 
       private
@@ -44,11 +46,13 @@ module Sie
         scanner.scan(/[ \t]+/)
       end
 
-      def entry?
+      def find_entry
         match = scanner.scan(/#\S+/)
 
         if match
           match.sub(/\A#/, "")
+        else
+          nil
         end
       end
 
@@ -60,11 +64,13 @@ module Sie
         scanner.scan(/}/)
       end
 
-      def string?
-        match = quoted_string? || unquoted_string?
+      def find_string
+        match = find_quoted_string || find_unquoted_string
 
         if match
           handle_escapes(match)
+        else
+          nil
         end
       end
 
@@ -72,15 +78,17 @@ module Sie
         scanner.eos?
       end
 
-      def quoted_string?
+      def find_quoted_string
         match = scanner.scan(/"(\\"|[^"])*"/)
 
         if match
           match.sub(/\A"/, "").sub(/"\z/, "")
+        else
+          nil
         end
       end
 
-      def unquoted_string?
+      def find_unquoted_string
         scanner.scan(/\S+/)
       end
 
