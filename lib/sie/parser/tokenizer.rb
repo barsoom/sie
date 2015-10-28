@@ -67,7 +67,7 @@ module Sie
         match = find_quoted_string || find_unquoted_string
 
         if match
-          remove_unnessesary_escapes(match)
+          remove_unnecessary_escapes(match)
         else
           nil
         end
@@ -91,7 +91,7 @@ module Sie
         scanner.scan(/\S+/)
       end
 
-      def remove_unnessesary_escapes(match)
+      def remove_unnecessary_escapes(match)
         match.gsub(/\\([\\"])/, "\\1")
       end
 
