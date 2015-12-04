@@ -202,15 +202,15 @@ describe Sie::Document, "#render" do
   context "with really long descriptions" do
     let(:accounts) {
       [
-        number: 1500, description: "Customer ledger with really really long description blablabla"
+        number: 1500, description: "Customer ledger with really really long description. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut. Truncated"
       ]
     }
     let(:vouchers) {
       [
         build_voucher(
-          description: "Payout 1 with really really long description blablabla",
+          description: "Payout 1 with really really long description. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi e. Truncated",
           voucher_lines: [
-            build_voucher_line(description: "Payout line 1 with really really long description blablabla"),
+            build_voucher_line(description: "Payout line 1 with really really long description. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wi. Truncated"),
             build_voucher_line(description: "Payout line 2"),
           ]
         )
@@ -218,9 +218,9 @@ describe Sie::Document, "#render" do
     }
 
     it "truncates the descriptions" do
-      expect(indexed_entry_attributes("konto", 0)).to eq("kontonr" => "1500", "kontonamn" => "Customer ledger with really re")
-      expect(indexed_entry("ver", 0).attributes["vertext"]).to eq("Payout 1 with really really lo")
-      expect(indexed_voucher_entries(0)[0].attributes["transtext"]).to eq("Payout line 1 with really real")
+      expect(indexed_entry_attributes("konto", 0)).to eq("kontonr" => "1500", "kontonamn" => "Customer ledger with really really long description. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut")
+      expect(indexed_entry("ver", 0).attributes["vertext"]).to eq("Payout 1 with really really long description. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi e")
+      expect(indexed_voucher_entries(0)[0].attributes["transtext"]).to eq("Payout line 1 with really really long description. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut w")
     end
   end
 
