@@ -6,7 +6,7 @@ require "active_support/core_ext/module/delegation"
 module Sie
   class Document
     # Because fortnox imposes these limits
-    DESCRIPTION_LENGTH_MAX = 30
+    DESCRIPTION_LENGTH_MAX = 200
 
     pattr_initialize :data_source
 
@@ -111,7 +111,7 @@ module Sie
           amount         = line.fetch(:amount)
           booked_on      = line.fetch(:booked_on)
           dimensions     = line.fetch(:dimensions, {}).flatten
-          # Some SIE-importers (fortnox) cannot handle descriptions longer than 30 characters,
+          # Some SIE-importers (fortnox) cannot handle descriptions longer than 200 characters,
           # but the specification has no limit.
           description    = line.fetch(:description).slice(0, DESCRIPTION_LENGTH_MAX)
 
