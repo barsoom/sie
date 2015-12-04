@@ -202,7 +202,7 @@ describe Sie::Document, "#render" do
   context "with really long descriptions" do
     let(:accounts) {
       [
-        number: 1500, description: "quack" * 50  # Make sure that the description exceeds the limit (250 chars).
+        number: 1500, description: "quack" * 50  # Make sure that the description exceeds the limit (200 chars).
       ]
     }
     let(:vouchers) {
