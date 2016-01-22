@@ -5,8 +5,10 @@ require "active_support/core_ext/module/delegation"
 
 module Sie
   class Document
-    # Because fortnox imposes these limits
-    DESCRIPTION_LENGTH_MAX = 200
+    # Because some accounting software have limits
+    #  - Fortnox should handle 200
+    #  - Visma etc -> 100
+    DESCRIPTION_LENGTH_MAX = 100
 
     pattr_initialize :data_source
 
