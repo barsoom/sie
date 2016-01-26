@@ -202,15 +202,15 @@ describe Sie::Document, "#render" do
   context "with really long descriptions" do
     let(:accounts) {
       [
-        number: 1500, description: "quack" * 50  # Make sure that the description exceeds the limit (100 chars).
+        number: 1500, description: "k" * 101  # Make sure that the description exceeds the limit (100 chars).
       ]
     }
     let(:vouchers) {
       [
         build_voucher(
-          description: "quiff" * 50,
+          description: "d" * 101,
           voucher_lines: [
-            build_voucher_line(description: "quaff" * 50),
+            build_voucher_line(description: "v" * 101),
             build_voucher_line(description: "Payout line 2"),
           ]
         )
@@ -218,9 +218,9 @@ describe Sie::Document, "#render" do
     }
 
     it "truncates the descriptions" do
-      expect(indexed_entry_attributes("konto", 0)).to eq("kontonr" => "1500", "kontonamn" => "quack" * 20)
-      expect(indexed_entry("ver", 0).attributes["vertext"]).to eq("quiff" * 20)
-      expect(indexed_voucher_entries(0)[0].attributes["transtext"]).to eq("quaff" * 20)
+      expect(indexed_entry_attributes("konto", 0)).to eq("kontonr" => "1500", "kontonamn" => "k" * 100)
+      expect(indexed_entry("ver", 0).attributes["vertext"]).to eq("d" * 100)
+      expect(indexed_voucher_entries(0)[0].attributes["transtext"]).to eq("v" * 100)
     end
   end
 
