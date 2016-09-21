@@ -163,6 +163,10 @@ Getting the latest code and gems:
 
 [SIE format specification rev 4B (swedish)](http://www.sie.se/wp-content/uploads/2014/01/SIE_filformat_ver_4B_080930.pdf)
 
+## See also
+
+* [PHP port of this library](https://github.com/neam/php-sie)
+
 
 ## Contributing
 
