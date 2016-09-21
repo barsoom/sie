@@ -1,4 +1,9 @@
 language: ruby
-rvm:
-  - 2.2.1
-  - 2.0.0
+matrix:
+  include:
+    - rvm: 2.2.2
+      gemfile: Gemfile
+    - rvm: 2.2.1
+      gemfile: Gemfile.pre_2.2.2
+    - rvm: 2.0.0
+      gemfile: Gemfile.pre_2.2.2
