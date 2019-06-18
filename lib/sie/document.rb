@@ -10,7 +10,7 @@ module Sie
     #  - Visma etc -> 100
     DESCRIPTION_LENGTH_MAX = 100
 
-    pattr_initialize :data_source
+    pattr_initialize :data_source, [ exclude_balance_rows: false ]
 
     def render
       add_header
@@ -55,6 +55,8 @@ module Sie
     end
 
     def add_balances
+      return if exclude_balance_rows
+
       financial_years.each_with_index do |date_range, index|
         add_balance_rows("IB", -index, balance_account_numbers, date_range.begin)
         add_balance_rows("UB", -index, balance_account_numbers, date_range.end)

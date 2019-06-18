@@ -88,8 +88,8 @@ describe Sie::Document, "#render" do
     end
   end
 
-  let(:doc) {
-    data_source = TestDataSource.new(
+  let(:data_source) {
+    TestDataSource.new(
       accounts: accounts,
       vouchers: vouchers,
       program: "Foonomic",
@@ -101,6 +101,9 @@ describe Sie::Document, "#render" do
       closing_account_numbers: [ 3100, 9999 ],
       dimensions: dimensions
     )
+  }
+
+  let(:doc) {
     Sie::Document.new(data_source)
   }
 
@@ -197,6 +200,26 @@ describe Sie::Document, "#render" do
       "transdat" => "20120831", "transtext" => "Payout line 2",
       "objektlista" => []
     )
+  end
+
+  it "excludes balance rows if given the option 'exclude_balance_rows'" do
+    document_without_balance_rows = Sie::Document.new(data_source, exclude_balance_rows: true)
+    sie_file = Sie::Parser.new.parse(document_without_balance_rows.render)
+    expect(sie_file.entries_with_label("ib")).to be_empty
+    expect(sie_file.entries_with_label("ub")).to be_empty
+    expect(sie_file.entries_with_label("res")).to be_empty
+
+    document_with_balance_rows = Sie::Document.new(data_source, exclude_balance_rows: false)
+    sie_file = Sie::Parser.new.parse(document_with_balance_rows.render)
+    expect(sie_file.entries_with_label("ib")).not_to be_empty
+    expect(sie_file.entries_with_label("ub")).not_to be_empty
+    expect(sie_file.entries_with_label("res")).not_to be_empty
+
+    document_will_default_with_balance_rows = Sie::Document.new(data_source)
+    sie_file = Sie::Parser.new.parse(document_will_default_with_balance_rows.render)
+    expect(sie_file.entries_with_label("ib")).not_to be_empty
+    expect(sie_file.entries_with_label("ub")).not_to be_empty
+    expect(sie_file.entries_with_label("res")).not_to be_empty
   end
 
   context "with really long descriptions" do
