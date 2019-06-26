@@ -154,7 +154,7 @@ First time setup:
 
 Running tests:
 
-    rake
+    bundle exec rake
 
 Getting the latest code and gems:
 

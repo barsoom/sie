@@ -22,4 +22,4 @@ bundle 1> /dev/null
 echo "done"
 echo
 
-rake
+bundle exec rake

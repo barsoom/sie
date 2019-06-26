@@ -36,6 +36,7 @@ module Sie
       "underdim" => [ "dimensionsnr", "namn", "superdimension" ],
       "valuta" => [ "valutakod" ],
       "ver" => [ "serie", "vernr", "verdatum", "vertext", "regdatum", "sign" ],
+      "ksumma" => ['kontrollsumma']
     }
   end
 end

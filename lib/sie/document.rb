@@ -2,6 +2,7 @@ require "attr_extras"
 require "sie/document/voucher_series"
 require "sie/document/renderer"
 require "active_support/core_ext/module/delegation"
+require 'zlib'
 
 module Sie
   class Document
@@ -19,14 +20,29 @@ module Sie
       add_dimensions
       add_balances
       add_vouchers
+      add_footer
 
-      renderer.render
+      result = renderer.render
+      result.include?('KSUMMA') ? add_ksumma(result) : result
     end
 
     private
 
     delegate :add_line, :add_array,
       to: :renderer
+
+    def add_ksumma(result)
+      result.gsub('KSUMMAVALUE', ksumma(result).to_s)
+    end
+
+    def ksumma(result)
+      raw_file = result.scan(/(?:(?<=\#KSUMMA\n)|(?!^)\G)[,{}()"\s]*\K[^,{}()"\s](?=.*\#KSUMMA)/m)
+      hash_ksumma(raw_file.reduce(:+))
+    end
+
+    def hash_ksumma(checksum)
+      Zlib::crc32(checksum)
+    end
 
     delegate :program, :program_version, :generated_on, :company_name,
       :accounts, :balance_account_numbers, :closing_account_numbers,
@@ -35,11 +51,16 @@ module Sie
 
     def add_header
       add_line("FLAGGA", 0)
+      add_line("KSUMMA")
       add_line("PROGRAM", program, program_version)
       add_line("FORMAT", "PC8")
       add_line("GEN", generated_on)
       add_line("SIETYP", 4)
       add_line("FNAMN", company_name)
+    end
+
+    def add_footer
+      add_line("KSUMMA KSUMMAVALUE")
     end
 
     def add_financial_years

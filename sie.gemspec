@@ -19,4 +19,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activesupport"
   spec.add_dependency "attr_extras"
+
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec"
 end
