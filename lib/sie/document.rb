@@ -160,6 +160,8 @@ module Sie
     end
 
     def financial_years
+      return [] unless data_source.respond_to?(:financial_years)
+
       data_source.financial_years.sort_by { |date_range| date_range.first }.reverse
     end
   end
