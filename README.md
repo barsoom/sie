@@ -1,7 +1,7 @@
 # Sie
 
-[![Build Status](https://secure.travis-ci.org/barsoom/sie.png)](http://travis-ci.org/barsoom/sie)
-[![Code Climate](https://codeclimate.com/github/barsoom/sie.png)](https://codeclimate.com/github/barsoom/sie)
+[![Build Status](https://secure.travis-ci.org/barsoom/sie.svg)](http://travis-ci.org/barsoom/sie)
+[![Code Climate](https://codeclimate.com/github/barsoom/sie.svg)](https://codeclimate.com/github/barsoom/sie)
 
 
 ## Installation
