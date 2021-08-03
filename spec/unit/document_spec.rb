@@ -176,7 +176,7 @@ describe Sie::Document, "#render" do
       "verdatum" => "20110903", "vertext" => "Invoice 1"
     )
     expect(indexed_voucher_entries(0)[0].attributes).to eq(
-      "kontonr" => "1500", "belopp" =>  "512.0",
+      "kontonr" => "1500", "belopp" => "512.0",
       "transdat" => "20110903", "transtext" => "Item 1",
       "objektlista" => [ { "dimensionsnr" => "6", "objektnr" => "1" } ]
     )
@@ -191,7 +191,7 @@ describe Sie::Document, "#render" do
       "verdatum" => "20120831", "vertext" => "Payout 1"
     )
     expect(indexed_voucher_entries(1)[0].attributes).to eq(
-      "kontonr" => "2400", "belopp" =>  "256.0",
+      "kontonr" => "2400", "belopp" => "256.0",
       "transdat" => "20120831", "transtext" => "Payout line 1",
       "objektlista" => []
     )
