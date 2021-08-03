@@ -53,6 +53,7 @@ module Sie
             hash_tokens = []
             while token = tokens.shift
               break if token.is_a?(Tokenizer::EndArrayToken)
+
               hash_tokens << token.value
             end
 
