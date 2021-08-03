@@ -13,7 +13,7 @@ describe Sie::Parser::Tokenizer do
       [ "EndArrayToken", "" ],
       [ "StringToken", "-200" ],
       [ "StringToken", "20130101" ],
-      [ "StringToken", "Foocorp expense" ]
+      [ "StringToken", "Foocorp expense" ],
     ])
   end
 
@@ -30,7 +30,7 @@ describe Sie::Parser::Tokenizer do
       [ "EndArrayToken", "" ],
       [ "StringToken", "-200" ],
       [ "StringToken", "20130101" ],
-      [ "StringToken", "Foocorp expense" ]
+      [ "StringToken", "Foocorp expense" ],
     ])
   end
 
@@ -39,7 +39,7 @@ describe Sie::Parser::Tokenizer do
     tokens = tokenizer.tokenize
 
     expect(token_table_for(tokens)).to eq([
-                                              [ "StringToken", 'String with " quote' ]
+                                              [ "StringToken", 'String with " quote' ],
                                           ])
   end
 
@@ -48,7 +48,7 @@ describe Sie::Parser::Tokenizer do
     tokens = tokenizer.tokenize
 
     expect(token_table_for(tokens)).to eq([
-                                              [ "StringToken", 'String_with_"_quote' ]
+                                              [ "StringToken", 'String_with_"_quote' ],
                                           ])
   end
 
@@ -57,7 +57,7 @@ describe Sie::Parser::Tokenizer do
     tokens = tokenizer.tokenize
 
     expect(token_table_for(tokens)).to eq([
-                                              [ "StringToken", 'String with \\ backslash' ]
+                                              [ "StringToken", 'String with \\ backslash' ],
                                           ])
   end
 
@@ -66,7 +66,7 @@ describe Sie::Parser::Tokenizer do
     tokens = tokenizer.tokenize
 
     expect(token_table_for(tokens)).to eq([
-                                              [ "StringToken", '\\"\\' ]
+                                              [ "StringToken", '\\"\\' ],
                                           ])
   end
 
@@ -76,7 +76,7 @@ describe Sie::Parser::Tokenizer do
 
     expect(token_table_for(tokens)).to eq([
                                               [ "EntryToken", "TRANS" ],
-                                              [ "StringToken", "2400" ]
+                                              [ "StringToken", "2400" ],
                                           ])
   end
 

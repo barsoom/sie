@@ -42,7 +42,7 @@ describe Sie::Document, "#render" do
             account_number: 1970, amount: -256.0, booked_on: Date.new(2012, 8, 31), description: "Payout line 2"
           },
         ]
-      }
+      },
     ]
   }
   let(:dimensions) {
@@ -50,9 +50,9 @@ describe Sie::Document, "#render" do
       {
         number: 6, description: "Project",
         objects: [
-          { number: 1, description: "Education" }
+          { number: 1, description: "Education" },
         ]
-      }
+      },
     ]
   }
 
@@ -225,7 +225,7 @@ describe Sie::Document, "#render" do
   context "with really long descriptions" do
     let(:accounts) {
       [
-        number: 1500, description: "k" * 101  # Make sure that the description exceeds the limit (100 chars).
+        number: 1500, description: "k" * 101,  # Make sure that the description exceeds the limit (100 chars).
       ]
     }
     let(:vouchers) {
@@ -236,7 +236,7 @@ describe Sie::Document, "#render" do
             build_voucher_line(description: "v" * 101),
             build_voucher_line(description: "Payout line 2"),
           ]
-        )
+        ),
       ]
     }
 
@@ -250,7 +250,7 @@ describe Sie::Document, "#render" do
   context "with a zeroed single voucher line" do
     let(:vouchers) {
       [
-        build_voucher(voucher_lines: [ build_voucher_line(amount: 0) ])
+        build_voucher(voucher_lines: [ build_voucher_line(amount: 0) ]),
       ]
     }
 
