@@ -1,6 +1,6 @@
 # Sie
 
-[![Build Status](https://secure.travis-ci.org/barsoom/sie.svg)](http://travis-ci.org/barsoom/sie)
+[![Build status](https://github.com/barsoom/sie/actions/workflows/ci.yml/badge.svg)](https://github.com/barsoom/sie/actions/workflows/ci.yml)
 [![Code Climate](https://codeclimate.com/github/barsoom/sie.svg)](https://codeclimate.com/github/barsoom/sie)
 
 
