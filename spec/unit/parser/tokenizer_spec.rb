@@ -84,7 +84,7 @@ describe Sie::Parser::Tokenizer do
     codes_not_allowed = (0..8).to_a + (10..31).to_a + [ 127 ]
     codes_not_allowed.each do |x|
       tokenizer = Sie::Parser::Tokenizer.new([ x ].pack("C"))
-      expect{tokenizer.tokenize}.to raise_error /Unhandled character/
+      expect{ tokenizer.tokenize }.to raise_error /Unhandled character/
     end
   end
 
