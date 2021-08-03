@@ -11,7 +11,7 @@ describe Sie::Parser::LineParser, "parse" do
       "belopp"  => "-200",
       "transdat" => "20130101",
       "transtext" => "Foocorp expense",
-      "objektlista" => [{"dimensionsnr" => "3", "objektnr" => "5"}],
+      "objektlista" => [ {"dimensionsnr" => "3", "objektnr" => "5"} ],
     })
   end
 

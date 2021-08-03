@@ -178,12 +178,12 @@ describe Sie::Document, "#render" do
     expect(indexed_voucher_entries(0)[0].attributes).to eq(
       "kontonr" => "1500", "belopp" =>  "512.0",
       "transdat" => "20110903", "transtext" => "Item 1",
-      "objektlista" => [{"dimensionsnr" => "6", "objektnr" => "1"}]
+      "objektlista" => [ {"dimensionsnr" => "6", "objektnr" => "1"} ]
     )
     expect(indexed_voucher_entries(0)[1].attributes).to eq(
       "kontonr" => "3100", "belopp" => "-512.0",
       "transdat" => "20110903", "transtext" => "Item 1",
-      "objektlista" => [{"dimensionsnr" => "6", "objektnr" => "1"}]
+      "objektlista" => [ {"dimensionsnr" => "6", "objektnr" => "1"} ]
     )
 
     expect(indexed_entry("ver", 1).attributes).to eq(

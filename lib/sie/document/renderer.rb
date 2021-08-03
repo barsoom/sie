@@ -9,7 +9,7 @@ class Sie::Document::Renderer
   end
 
   def add_line(label, *values)
-    append ["##{ label }", *format_values(values)].join(" ")
+    append [ "##{ label }", *format_values(values) ].join(" ")
   end
 
   def add_array
