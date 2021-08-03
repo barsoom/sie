@@ -27,9 +27,9 @@ module Sie
             entry.attributes[label] = attr_tokens.first
           else
             type = attr.fetch(:type)
-            values = attr_tokens.
-              each_slice(type.size).
-              map { |slice| Hash[type.zip(slice)] }
+            values = attr_tokens
+              .each_slice(type.size)
+              .map { |slice| Hash[type.zip(slice)] }
 
             entry.attributes[label] = values
           end
