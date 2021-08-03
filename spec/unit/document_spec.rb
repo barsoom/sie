@@ -299,7 +299,7 @@ describe Sie::Document, "#render" do
 
   def indexed_entry_attribute(label, index, attribute)
     indexed_entry_attributes(label, index).fetch(attribute) do
-      raise "Unknown attribute #{ attribute } in #{ entry.attributes.keys.inspect }"
+      raise "Unknown attribute #{attribute} in #{entry.attributes.keys.inspect}"
     end
   end
 
@@ -312,6 +312,6 @@ describe Sie::Document, "#render" do
   end
 
   def indexed_entry(label, index)
-    sie_file.entries_with_label(label)[index] or raise "No entry with label #{ label.inspect } found!"
+    sie_file.entries_with_label(label)[index] or raise "No entry with label #{label.inspect} found!"
   end
 end
