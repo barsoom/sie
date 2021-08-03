@@ -99,7 +99,7 @@ describe Sie::Document, "#render" do
       financial_years: financial_years,
       balance_account_numbers: [ 1500, 2400, 9999 ],
       closing_account_numbers: [ 3100, 9999 ],
-      dimensions: dimensions
+      dimensions: dimensions,
     )
   }
 
@@ -235,7 +235,7 @@ describe Sie::Document, "#render" do
           voucher_lines: [
             build_voucher_line(description: "v" * 101),
             build_voucher_line(description: "Payout line 2"),
-          ]
+          ],
         ),
       ]
     }
