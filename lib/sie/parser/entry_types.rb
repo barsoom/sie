@@ -35,7 +35,7 @@ module Sie
       "ub" => [ "arsnr", "konto", "saldo", "kvantitet" ],
       "underdim" => [ "dimensionsnr", "namn", "superdimension" ],
       "valuta" => [ "valutakod" ],
-      "ver" => [ "serie", "vernr", "verdatum", "vertext", "regdatum", "sign" ]
+      "ver" => [ "serie", "vernr", "verdatum", "vertext", "regdatum", "sign" ],
     }
   end
 end

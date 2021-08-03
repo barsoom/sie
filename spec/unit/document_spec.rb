@@ -24,24 +24,24 @@ describe Sie::Document, "#render" do
         voucher_lines: [
           {
             account_number: 1500, amount: 512.0, booked_on: Date.new(2011, 9, 3), description: "Item 1",
-            dimensions: { 6 => 1 }
+            dimensions: { 6 => 1 },
           },
           {
             account_number: 3100, amount: -512.0, booked_on: Date.new(2011, 9, 3), description: "Item 1",
-            dimensions: { 6 => 1 }
+            dimensions: { 6 => 1 },
           },
-        ]
+        ],
       },
       {
         creditor: true, type: :payment, number: 2, booked_on: Date.new(2012, 8, 31), description: "Payout 1",
         voucher_lines: [
           {
-            account_number: 2400, amount: 256.0, booked_on: Date.new(2012, 8, 31), description: "Payout line 1"
+            account_number: 2400, amount: 256.0, booked_on: Date.new(2012, 8, 31), description: "Payout line 1",
           },
           {
-            account_number: 1970, amount: -256.0, booked_on: Date.new(2012, 8, 31), description: "Payout line 2"
+            account_number: 1970, amount: -256.0, booked_on: Date.new(2012, 8, 31), description: "Payout line 2",
           },
-        ]
+        ],
       },
     ]
   }
@@ -51,7 +51,7 @@ describe Sie::Document, "#render" do
         number: 6, description: "Project",
         objects: [
           { number: 1, description: "Education" },
-        ]
+        ],
       },
     ]
   }
