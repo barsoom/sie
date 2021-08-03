@@ -12,4 +12,4 @@ namespace :spec do
   end
 end
 
-task :default => [ :"spec:unit", :"spec:integration" ]
+task default: [ :"spec:unit", :"spec:integration" ]

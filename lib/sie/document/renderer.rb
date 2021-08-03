@@ -36,7 +36,7 @@ class Sie::Document::Renderer
   end
 
   def encoded(text)
-    text.encode(ENCODING, :invalid => :replace, :undef => :replace, :replace => "?")
+    text.encode(ENCODING, invalid: :replace, undef: :replace, replace: "?")
   end
 
   def format_value(value)
