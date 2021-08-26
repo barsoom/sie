@@ -3,6 +3,7 @@
 [![Build status](https://github.com/barsoom/sie/actions/workflows/ci.yml/badge.svg)](https://github.com/barsoom/sie/actions/workflows/ci.yml)
 [![Code Climate](https://codeclimate.com/github/barsoom/sie.svg)](https://codeclimate.com/github/barsoom/sie)
 
+SIE parser and generator supporting the [format "SIE typ 1-4 – Klassisk SIE"](https://sie.se/format/).
 
 ## Installation
 
