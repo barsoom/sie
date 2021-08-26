@@ -161,7 +161,7 @@ Getting the latest code and gems:
 
 ## Resources
 
-[SIE format specification rev 4B (swedish)](http://www.sie.se/wp-content/uploads/2014/01/SIE_filformat_ver_4B_080930.pdf)
+[SIE format specification rev 4B (Swedish)](https://sie.se/wp-content/uploads/2020/05/SIE_filformat_ver_4B_080930.pdf)
 
 ## See also
 
