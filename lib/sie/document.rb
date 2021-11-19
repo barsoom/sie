@@ -25,6 +25,9 @@ module Sie
 
     private
 
+    delegate :add_line, :add_array,
+      to: :renderer
+
     delegate :program, :program_version, :generated_on, :company_name,
       :accounts, :balance_account_numbers, :closing_account_numbers,
       :balance_before, :each_voucher, :dimensions,
@@ -130,8 +133,6 @@ module Sie
         end
       end
     end
-
-    delegate :add_line, :add_array, to: :renderer
 
     def renderer
       @renderer ||= Renderer.new
