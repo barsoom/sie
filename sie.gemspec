@@ -12,6 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Parses and generates SIE files (http://sie.se/)}
   spec.homepage      = ""
   spec.license       = "MIT"
+  spec.metadata      = { "rubygems_mfa_required" => "true" }
 
   spec.files         = Dir["lib/**/*.rb", "README.md"]
   spec.require_paths = [ "lib" ]
