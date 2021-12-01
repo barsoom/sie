@@ -5,7 +5,6 @@ gemspec
 
 group :development, :test do
   gem "barsoom_utils"
-  gem "bundler"
   gem "rake"
   gem "rspec"
   gem "rubocop"
