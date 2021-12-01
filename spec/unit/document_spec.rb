@@ -24,25 +24,25 @@ describe Sie::Document, "#render" do
         voucher_lines: [
           {
             account_number: 1500, amount: 512.0, booked_on: Date.new(2011, 9, 3), description: "Item 1",
-            dimensions: { 6 => 1 }
+            dimensions: { 6 => 1 },
           },
           {
             account_number: 3100, amount: -512.0, booked_on: Date.new(2011, 9, 3), description: "Item 1",
-            dimensions: { 6 => 1 }
+            dimensions: { 6 => 1 },
           },
-        ]
+        ],
       },
       {
         creditor: true, type: :payment, number: 2, booked_on: Date.new(2012, 8, 31), description: "Payout 1",
         voucher_lines: [
           {
-            account_number: 2400, amount: 256.0, booked_on: Date.new(2012, 8, 31), description: "Payout line 1"
+            account_number: 2400, amount: 256.0, booked_on: Date.new(2012, 8, 31), description: "Payout line 1",
           },
           {
-            account_number: 1970, amount: -256.0, booked_on: Date.new(2012, 8, 31), description: "Payout line 2"
+            account_number: 1970, amount: -256.0, booked_on: Date.new(2012, 8, 31), description: "Payout line 2",
           },
-        ]
-      }
+        ],
+      },
     ]
   }
   let(:dimensions) {
@@ -50,9 +50,9 @@ describe Sie::Document, "#render" do
       {
         number: 6, description: "Project",
         objects: [
-          { number: 1, description: "Education" }
-        ]
-      }
+          { number: 1, description: "Education" },
+        ],
+      },
     ]
   }
 
@@ -88,8 +88,8 @@ describe Sie::Document, "#render" do
     end
   end
 
-  let(:doc) {
-    data_source = TestDataSource.new(
+  let(:data_source) {
+    TestDataSource.new(
       accounts: accounts,
       vouchers: vouchers,
       program: "Foonomic",
@@ -99,8 +99,11 @@ describe Sie::Document, "#render" do
       financial_years: financial_years,
       balance_account_numbers: [ 1500, 2400, 9999 ],
       closing_account_numbers: [ 3100, 9999 ],
-      dimensions: dimensions
+      dimensions: dimensions,
     )
+  }
+
+  let(:doc) {
     Sie::Document.new(data_source)
   }
 
@@ -173,14 +176,14 @@ describe Sie::Document, "#render" do
       "verdatum" => "20110903", "vertext" => "Invoice 1"
     )
     expect(indexed_voucher_entries(0)[0].attributes).to eq(
-      "kontonr" => "1500", "belopp" =>  "512.0",
+      "kontonr" => "1500", "belopp" => "512.0",
       "transdat" => "20110903", "transtext" => "Item 1",
-      "objektlista" => [{"dimensionsnr" => "6", "objektnr" => "1"}]
+      "objektlista" => [ { "dimensionsnr" => "6", "objektnr" => "1" } ]
     )
     expect(indexed_voucher_entries(0)[1].attributes).to eq(
       "kontonr" => "3100", "belopp" => "-512.0",
       "transdat" => "20110903", "transtext" => "Item 1",
-      "objektlista" => [{"dimensionsnr" => "6", "objektnr" => "1"}]
+      "objektlista" => [ { "dimensionsnr" => "6", "objektnr" => "1" } ]
     )
 
     expect(indexed_entry("ver", 1).attributes).to eq(
@@ -188,7 +191,7 @@ describe Sie::Document, "#render" do
       "verdatum" => "20120831", "vertext" => "Payout 1"
     )
     expect(indexed_voucher_entries(1)[0].attributes).to eq(
-      "kontonr" => "2400", "belopp" =>  "256.0",
+      "kontonr" => "2400", "belopp" => "256.0",
       "transdat" => "20120831", "transtext" => "Payout line 1",
       "objektlista" => []
     )
@@ -199,10 +202,30 @@ describe Sie::Document, "#render" do
     )
   end
 
+  it "excludes balance rows if given the option 'exclude_balance_rows'" do
+    document_without_balance_rows = Sie::Document.new(data_source, exclude_balance_rows: true)
+    sie_file = Sie::Parser.new.parse(document_without_balance_rows.render)
+    expect(sie_file.entries_with_label("ib")).to be_empty
+    expect(sie_file.entries_with_label("ub")).to be_empty
+    expect(sie_file.entries_with_label("res")).to be_empty
+
+    document_with_balance_rows = Sie::Document.new(data_source, exclude_balance_rows: false)
+    sie_file = Sie::Parser.new.parse(document_with_balance_rows.render)
+    expect(sie_file.entries_with_label("ib")).not_to be_empty
+    expect(sie_file.entries_with_label("ub")).not_to be_empty
+    expect(sie_file.entries_with_label("res")).not_to be_empty
+
+    document_will_default_with_balance_rows = Sie::Document.new(data_source)
+    sie_file = Sie::Parser.new.parse(document_will_default_with_balance_rows.render)
+    expect(sie_file.entries_with_label("ib")).not_to be_empty
+    expect(sie_file.entries_with_label("ub")).not_to be_empty
+    expect(sie_file.entries_with_label("res")).not_to be_empty
+  end
+
   context "with really long descriptions" do
     let(:accounts) {
       [
-        number: 1500, description: "k" * 101  # Make sure that the description exceeds the limit (100 chars).
+        number: 1500, description: "k" * 101,  # Make sure that the description exceeds the limit (100 chars).
       ]
     }
     let(:vouchers) {
@@ -212,8 +235,8 @@ describe Sie::Document, "#render" do
           voucher_lines: [
             build_voucher_line(description: "v" * 101),
             build_voucher_line(description: "Payout line 2"),
-          ]
-        )
+          ],
+        ),
       ]
     }
 
@@ -227,7 +250,7 @@ describe Sie::Document, "#render" do
   context "with a zeroed single voucher line" do
     let(:vouchers) {
       [
-        build_voucher(voucher_lines: [ build_voucher_line(amount: 0) ])
+        build_voucher(voucher_lines: [ build_voucher_line(amount: 0) ]),
       ]
     }
 
@@ -276,7 +299,7 @@ describe Sie::Document, "#render" do
 
   def indexed_entry_attribute(label, index, attribute)
     indexed_entry_attributes(label, index).fetch(attribute) do
-      raise "Unknown attribute #{ attribute } in #{ entry.attributes.keys.inspect }"
+      raise "Unknown attribute #{attribute} in #{entry.attributes.keys.inspect}"
     end
   end
 
@@ -289,6 +312,6 @@ describe Sie::Document, "#render" do
   end
 
   def indexed_entry(label, index)
-    sie_file.entries_with_label(label)[index] or raise "No entry with label #{ label.inspect } found!"
+    sie_file.entries_with_label(label)[index] or raise "No entry with label #{label.inspect} found!"
   end
 end

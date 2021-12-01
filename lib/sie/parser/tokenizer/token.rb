@@ -19,7 +19,7 @@ module Sie
         end
 
         def label
-          value.sub(/^#/, '').downcase
+          value.sub(/^#/, "").downcase
         end
       end
 

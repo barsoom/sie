@@ -13,7 +13,7 @@ describe Sie::Parser::Tokenizer do
       [ "EndArrayToken", "" ],
       [ "StringToken", "-200" ],
       [ "StringToken", "20130101" ],
-      [ "StringToken", "Foocorp expense" ]
+      [ "StringToken", "Foocorp expense" ],
     ])
   end
 
@@ -30,7 +30,7 @@ describe Sie::Parser::Tokenizer do
       [ "EndArrayToken", "" ],
       [ "StringToken", "-200" ],
       [ "StringToken", "20130101" ],
-      [ "StringToken", "Foocorp expense" ]
+      [ "StringToken", "Foocorp expense" ],
     ])
   end
 
@@ -39,7 +39,7 @@ describe Sie::Parser::Tokenizer do
     tokens = tokenizer.tokenize
 
     expect(token_table_for(tokens)).to eq([
-                                              [ "StringToken", 'String with " quote']
+                                              [ "StringToken", 'String with " quote' ],
                                           ])
   end
 
@@ -48,7 +48,7 @@ describe Sie::Parser::Tokenizer do
     tokens = tokenizer.tokenize
 
     expect(token_table_for(tokens)).to eq([
-                                              [ "StringToken", 'String_with_"_quote']
+                                              [ "StringToken", 'String_with_"_quote' ],
                                           ])
   end
 
@@ -57,7 +57,7 @@ describe Sie::Parser::Tokenizer do
     tokens = tokenizer.tokenize
 
     expect(token_table_for(tokens)).to eq([
-                                              [ "StringToken", 'String with \\ backslash']
+                                              [ "StringToken", 'String with \\ backslash' ],
                                           ])
   end
 
@@ -66,7 +66,7 @@ describe Sie::Parser::Tokenizer do
     tokens = tokenizer.tokenize
 
     expect(token_table_for(tokens)).to eq([
-                                              [ "StringToken", '\\"\\']
+                                              [ "StringToken", '\\"\\' ],
                                           ])
   end
 
@@ -75,16 +75,16 @@ describe Sie::Parser::Tokenizer do
     tokens = tokenizer.tokenize
 
     expect(token_table_for(tokens)).to eq([
-                                              [ "EntryToken", "TRANS"],
-                                              [ "StringToken", "2400"]
+                                              [ "EntryToken", "TRANS" ],
+                                              [ "StringToken", "2400" ],
                                           ])
   end
 
   it "rejects control characters" do
-    codes_not_allowed = (0..8).to_a + (10..31).to_a + [127]
+    codes_not_allowed = (0..8).to_a + (10..31).to_a + [ 127 ]
     codes_not_allowed.each do |x|
-      tokenizer = Sie::Parser::Tokenizer.new([x].pack("C"))
-      expect{tokenizer.tokenize}.to raise_error /Unhandled character/
+      tokenizer = Sie::Parser::Tokenizer.new([ x ].pack("C"))
+      expect { tokenizer.tokenize }.to raise_error /Unhandled character/
     end
   end
 

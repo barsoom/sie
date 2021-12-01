@@ -9,7 +9,7 @@ class Sie::Document::Renderer
   end
 
   def add_line(label, *values)
-    append ["##{ label }", *format_values(values)].join(" ")
+    append [ "##{label}", *format_values(values) ].join(" ")
   end
 
   def add_array
@@ -36,7 +36,7 @@ class Sie::Document::Renderer
   end
 
   def encoded(text)
-    text.encode(ENCODING, :invalid => :replace, :undef => :replace, :replace => "?")
+    text.encode(ENCODING, invalid: :replace, undef: :replace, replace: "?")
   end
 
   def format_value(value)
