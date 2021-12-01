@@ -51,6 +51,6 @@ describe Sie::Parser do
   end
 
   def open_file(fixture_file, &block)
-    File.open(File.join(File.dirname(__FILE__), "../#{fixture_file}"), &block)
+    File.open(File.join(__dir__, "#{fixture_file}"), &block)
   end
 end
