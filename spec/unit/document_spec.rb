@@ -1,6 +1,7 @@
 # encoding: utf-8
 require "spec_helper"
 require "sie"
+require "active_support"
 require "active_support/core_ext/date/calculations"
 
 describe Sie::Document, "#render" do
