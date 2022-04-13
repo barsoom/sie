@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = [ "Barsoom AB" ]
   spec.email         = [ "all@barsoom.se" ]
   spec.description   = %q{SIE parser and generator}
-  spec.summary       = %q{Parses and generates SIE files (http://sie.se/)}
+  spec.summary       = %q{Parses and generates SIE files (https://sie.se/)}
   spec.homepage      = ""
   spec.license       = "MIT"
   spec.metadata      = { "rubygems_mfa_required" => "true" }
