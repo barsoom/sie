@@ -88,7 +88,7 @@ module Sie
       end
 
       def find_unquoted_string
-        scanner.scan(/\S+/)
+        scanner.scan(/[^}\s]+/)
       end
 
       def remove_unnecessary_escapes(match)
