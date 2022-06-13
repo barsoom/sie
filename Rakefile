@@ -1,15 +1,22 @@
 require "bundler/gem_tasks"
 
-namespace :spec do
-  task :unit do
-    puts "Running unit tests:"
-    system("rspec spec/unit") || exit(1)
+begin
+  require 'rspec/core/rake_task'
+
+  desc "Run unit tests."
+  RSpec::Core::RakeTask.new(:unit_tests) do |t|
+    t.pattern = "spec/unit/**/*.rb"
   end
 
-  task :integration do
-    puts "Running integrated tests:"
-    system("rspec spec/integration/**_spec.rb") || exit(1)
+  desc "Run integration tests."
+  RSpec::Core::RakeTask.new(:integration_tests) do |t|
+    t.pattern = "spec/integration/**/*.rb"
   end
+
+  desc "Run all tests."
+  task default: [ :unit_tests, :integration_tests ]
+rescue LoadError
+  warn "RSpec not loaded. Quitting."
 end
 
-task default: [ :"spec:unit", :"spec:integration" ]
+
