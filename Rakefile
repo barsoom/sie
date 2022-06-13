@@ -19,4 +19,3 @@ rescue LoadError
   warn "RSpec not loaded. Quitting."
 end
 
-
