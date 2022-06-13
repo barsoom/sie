@@ -3,7 +3,7 @@ require "bundler/gem_tasks"
 namespace :spec do
   task :unit do
     puts "Running unit tests:"
-    system("rspec spec/unit/**_spec.rb") || exit(1)
+    system("rspec spec/unit") || exit(1)
   end
 
   task :integration do
