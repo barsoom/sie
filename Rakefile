@@ -1,7 +1,7 @@
 require "bundler/gem_tasks"
 
 begin
-  require 'rspec/core/rake_task'
+  require "rspec/core/rake_task"
 
   desc "Run unit tests."
   RSpec::Core::RakeTask.new(:unit_tests) do |t|
