@@ -139,7 +139,7 @@ module Sie
     end
 
     def financial_years
-      data_source.financial_years.sort_by { |date_range| date_range.first }.reverse
+      data_source.financial_years.sort_by(&:first).reverse
     end
   end
 end
