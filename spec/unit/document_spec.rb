@@ -145,9 +145,9 @@ describe Sie::Document, "#render" do
   end
 
   it "has balances brought forward (ingående balans)" do
-    expect(indexed_entry_attributes("ib", 0)).not_to eq("arsnr" =>  "0", "konto" => "9999", "saldo" => "")
-    expect(indexed_entry_attributes("ib", 0)).to     eq("arsnr" =>  "0", "konto" => "1500", "saldo" => "1600.0")
-    expect(indexed_entry_attributes("ib", 1)).to     eq("arsnr" =>  "0", "konto" => "2400", "saldo" => "2500.0")
+    expect(indexed_entry_attributes("ib", 0)).not_to eq("arsnr" => "0",  "konto" => "9999", "saldo" => "")
+    expect(indexed_entry_attributes("ib", 0)).to     eq("arsnr" => "0",  "konto" => "1500", "saldo" => "1600.0")
+    expect(indexed_entry_attributes("ib", 1)).to     eq("arsnr" => "0",  "konto" => "2400", "saldo" => "2500.0")
     expect(indexed_entry_attributes("ib", 2)).to     eq("arsnr" => "-1", "konto" => "1500", "saldo" => "1600.0")
     expect(indexed_entry_attributes("ib", 3)).to     eq("arsnr" => "-1", "konto" => "2400", "saldo" => "2500.0")
     expect(indexed_entry_attributes("ib", 4)).to     eq("arsnr" => "-2", "konto" => "1500", "saldo" => "1600.0")
@@ -155,9 +155,9 @@ describe Sie::Document, "#render" do
   end
 
   it "has balances carried forward (utgående balans)" do
-    expect(indexed_entry_attributes("ub", 0)).not_to eq("arsnr" =>  "0", "konto" => "9999", "saldo" => "")
-    expect(indexed_entry_attributes("ub", 0)).to     eq("arsnr" =>  "0", "konto" => "1500", "saldo" => "4600.0")
-    expect(indexed_entry_attributes("ub", 1)).to     eq("arsnr" =>  "0", "konto" => "2400", "saldo" => "5500.0")
+    expect(indexed_entry_attributes("ub", 0)).not_to eq("arsnr" => "0",  "konto" => "9999", "saldo" => "")
+    expect(indexed_entry_attributes("ub", 0)).to     eq("arsnr" => "0",  "konto" => "1500", "saldo" => "4600.0")
+    expect(indexed_entry_attributes("ub", 1)).to     eq("arsnr" => "0",  "konto" => "2400", "saldo" => "5500.0")
     expect(indexed_entry_attributes("ub", 2)).to     eq("arsnr" => "-1", "konto" => "1500", "saldo" => "4600.0")
     expect(indexed_entry_attributes("ub", 3)).to     eq("arsnr" => "-1", "konto" => "2400", "saldo" => "5500.0")
     expect(indexed_entry_attributes("ub", 4)).to     eq("arsnr" => "-2", "konto" => "1500", "saldo" => "4600.0")
@@ -165,8 +165,8 @@ describe Sie::Document, "#render" do
   end
 
   it "has closing account balances (saldo för resultatkonto)" do
-    expect(indexed_entry_attributes("res", 0)).not_to eq("ars" =>  "0", "konto" => "9999", "saldo" =>  "")
-    expect(indexed_entry_attributes("res", 0)).to     eq("ars" =>  "0", "konto" => "3100", "saldo" =>  "6200.0")
+    expect(indexed_entry_attributes("res", 0)).not_to eq("ars" => "0",  "konto" => "9999", "saldo" =>  "")
+    expect(indexed_entry_attributes("res", 0)).to     eq("ars" => "0",  "konto" => "3100", "saldo" =>  "6200.0")
     expect(indexed_entry_attributes("res", 1)).to     eq("ars" => "-1", "konto" => "3100", "saldo" =>  "6200.0")
     expect(indexed_entry_attributes("res", 2)).to     eq("ars" => "-2", "konto" => "3100", "saldo" =>  "6200.0")
   end
