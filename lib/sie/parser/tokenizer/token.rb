@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "sie/parser/entry_types"
 
 module Sie
