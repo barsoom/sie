@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Sie::Document::VoucherSeries, ".for" do
+RSpec.describe Sie::Document::VoucherSeries, ".for" do
   subject(:series) { Sie::Document::VoucherSeries.for(creditor, type) }
 
   let(:type) { :invoice }

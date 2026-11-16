@@ -1,7 +1,7 @@
 require "spec_helper"
 require "sie/parser/line_parser"
 
-describe Sie::Parser::LineParser, "parse" do
+RSpec.describe Sie::Parser::LineParser, "parse" do
   it "parses lines from a sie file" do
     parser = Sie::Parser::LineParser.new('#TRANS 2400 {"3" "5"} -200 20130101 "Foocorp expense"')
     entry = parser.parse

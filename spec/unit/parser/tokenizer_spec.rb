@@ -1,7 +1,7 @@
 require "spec_helper"
 require "sie/parser/tokenizer"
 
-describe Sie::Parser::Tokenizer do
+RSpec.describe Sie::Parser::Tokenizer do
   it "tokenizes the given line" do
     tokenizer = Sie::Parser::Tokenizer.new('#TRANS 2400 {} -200 20130101 "Foocorp expense"')
     tokens = tokenizer.tokenize

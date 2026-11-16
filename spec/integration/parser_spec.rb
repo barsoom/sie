@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Sie::Parser do
+RSpec.describe Sie::Parser do
   it "parses a file" do
     parser = Sie::Parser.new
 

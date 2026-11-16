@@ -3,7 +3,7 @@ require "sie"
 require "active_support"
 require "active_support/core_ext/date/calculations"
 
-describe Sie::Document, "#render" do
+RSpec.describe Sie::Document, "#render" do
   let(:financial_years) {
     [
       Date.new(2011, 1, 1)..Date.new(2011, 12, 31),
