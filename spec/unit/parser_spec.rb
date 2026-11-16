@@ -1,7 +1,7 @@
 require "spec_helper"
 require "sie/parser"
 
-describe Sie::Parser, "parse" do
+RSpec.describe Sie::Parser, "parse" do
   it "parses sie data that includes arrays" do
     data = <<-DATA
 #VER "LF" 2222 20130101 "Foocorp expense"
