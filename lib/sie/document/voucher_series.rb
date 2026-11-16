@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Sie::Document
   class VoucherSeries
     DEBTOR_INVOICE   = "KF"

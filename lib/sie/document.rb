@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "attr_extras"
 require "sie/document/voucher_series"
 require "sie/document/renderer"

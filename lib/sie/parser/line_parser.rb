@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "sie/parser/tokenizer"
 require "sie/parser/entry"
 require "sie/parser/sie_file"
