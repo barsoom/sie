@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Sie
   class Parser
     class Entry
